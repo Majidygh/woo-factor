@@ -6,8 +6,6 @@
 [![WooCommerce 6.0+](https://img.shields.io/badge/WooCommerce-6.0%2B-96588A?logo=woocommerce&logoColor=white)](https://woocommerce.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-> **وضعیت پروژه:** نسخه `1.1.0` در حال توسعه است. قبل از استفاده در فروشگاه عملیاتی، ابتدا روی staging یا یک کپی آزمایشی سایت بررسی کنید.
-
 ## قابلیت ها
 
 - سه قالب فاکتور: **Classic**، **Modern** و **Commercial**
