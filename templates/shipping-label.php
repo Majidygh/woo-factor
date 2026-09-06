@@ -1,0 +1,130 @@
+<?php
+/**
+ * Shipping Label Template - Pixel Perfect
+ */
+defined('ABSPATH') || exit;
+?>
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>برچسب پستی سفارش <?php echo esc_html($data['order_number']); ?></title>
+    <style>
+        @page { size: A5 landscape; margin: 8mm; }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        body {
+            font-family: 'Vazirmatn', 'Tahoma', sans-serif;
+            background: #f8fafc;
+            direction: rtl;
+            padding: 15px;
+            font-size: 12px;
+        }
+        .label-box {
+            width: 100%;
+            max-width: 680px;
+            margin: 0 auto;
+            border: 2px dashed #0f172a;
+            padding: 14px;
+            background: #fff;
+            border-radius: 6px;
+        }
+        .header-table {
+            width: 100%;
+            border-collapse: collapse;
+            border-bottom: 2px solid #0f172a;
+            padding-bottom: 8px;
+            margin-bottom: 10px;
+        }
+        .header-table td { vertical-align: middle; }
+        .sender-box, .receiver-box {
+            border: 1px solid #cbd5e1;
+            padding: 8px 10px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+        }
+        .receiver-box {
+            background: #f0fdf4;
+            border-color: #86efac;
+        }
+        .box-title {
+            font-weight: 800;
+            font-size: 12px;
+            margin-bottom: 4px;
+            border-bottom: 1px solid #cbd5e1;
+            padding-bottom: 3px;
+        }
+        .receiver-box .box-title {
+            color: #166534;
+            border-color: #86efac;
+        }
+        .info-line {
+            margin-bottom: 3px;
+            line-height: 1.5;
+        }
+        .postcode-tag {
+            font-size: 13px;
+            font-weight: 900;
+            background: #166534;
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+        .footer-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 10.5px;
+            color: #475569;
+            margin-top: 4px;
+        }
+        @media print {
+            body { background: #fff; padding: 0; }
+            .no-print { display: none !important; }
+        }
+    </style>
+</head>
+<body>
+    <div class="no-print" style="max-width: 680px; margin: 0 auto 10px; text-align: left;">
+        <button onclick="window.print();" style="padding: 6px 14px; background: #0f172a; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-family: inherit; font-weight: bold;">🖨️ چاپ برچسب پستی</button>
+    </div>
+
+    <div class="label-box">
+        <table class="header-table">
+            <tr>
+                <td style="width: 50%;">
+                    <div style="font-size: 15px; font-weight: 900; color: #0f172a;">📮 مرسوله پستی / پیک اکسپرس</div>
+                    <div style="font-size: 11px; color: #475569; margin-top: 2px;">سفارش شماره: <strong><?php echo woo_factor_fa_digits($data['order_number']); ?></strong></div>
+                </td>
+                <td style="width: 50%; text-align: left;">
+                    <?php if (!empty($data['barcode_svg'])): ?>
+                        <?php echo $data['barcode_svg']; ?>
+                    <?php endif; ?>
+                </td>
+            </tr>
+        </table>
+
+        <div class="sender-box">
+            <div class="box-title">فرستنده: <?php echo esc_html($data['seller']['name']); ?></div>
+            <div class="info-line">نشانی: <?php echo esc_html($data['seller']['address'] ?: 'دفتر مرکزی فروشگاه'); ?></div>
+            <div class="info-line">تلفن: <?php echo woo_factor_fa_digits($data['seller']['phone'] ?: '-'); ?> | وبسایت: <?php echo esc_html($data['seller']['website']); ?></div>
+        </div>
+
+        <div class="receiver-box">
+            <div class="box-title">گیرنده: <?php echo esc_html($data['buyer']['shipping_name']); ?></div>
+            <div class="info-line" style="font-size: 13px; font-weight: bold; color: #0f172a;">نشانی کامل: <?php echo esc_html($data['buyer']['shipping_address'] ?: $data['buyer']['full_address']); ?></div>
+            <div class="info-line" style="margin-top: 5px;">
+                کد پستی: <span class="postcode-tag"><?php echo woo_factor_fa_digits($data['buyer']['shipping_postcode'] ?: '-'); ?></span>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                شماره همراه: <strong><?php echo woo_factor_fa_digits($data['buyer']['shipping_phone'] ?: '-'); ?></strong>
+            </div>
+        </div>
+
+        <table class="footer-table">
+            <tr>
+                <td>روش ارسال: <strong><?php echo esc_html($data['totals']['shipping_method']); ?></strong></td>
+                <td style="text-align: left;">تاریخ ثبت: <strong><?php echo esc_html($data['jalali_date']); ?></strong></td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>
