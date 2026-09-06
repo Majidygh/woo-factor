@@ -227,7 +227,7 @@ $logo_url = !empty($data['seller']['logo_url']) ? $data['seller']['logo_url'] : 
                     <img src="<?php echo esc_url($logo_url); ?>" class="logo-img" style="max-height: 45px; margin-bottom: 6px; display: block;" alt="Logo">
                 <?php endif; ?>
                 <h1>فاکتور رسمی فروش</h1>
-                <div style="color: #475569; font-size: 11px;"><?php echo esc_html($data['seller']['name']); ?></div>
+                <div style="color: #38bdf8; font-size: 12px; font-weight: bold; margin-top: 3px; letter-spacing:0.5px; text-shadow: 0 1px 3px #0002;"> <?php echo esc_html($data['seller']['name']); ?> </div>
             </div>
             <div class="header-meta-badge">
                 <div>شماره: <strong><?php echo woo_factor_fa_digits($data['invoice_number']); ?></strong></div>

@@ -111,7 +111,7 @@ tests/                  تست های ساده PHP (بدون نیاز به PHPUn
 
 ## سازنده
 
-[مجید یعقوبی](https://github.com/Majidygh)
+[majidygh](https://github.com/majidygh)
 
 ---
 
