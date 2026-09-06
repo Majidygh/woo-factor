@@ -1,0 +1,13 @@
+/*
+ * Woo Factor — shared base styles.
+ * The @font-face rules for the self-hosted Vazirmatn font are generated
+ * and inlined (as data URIs) by Woo_Factor_Renderer::font_css() at render
+ * time, so this file only carries the cascade rules that make the font win.
+ */
+
+/* Make the injected font actually win over template stacks. */
+body, table, th, td, div, span, p, a, h1, h2, h3, h4, button, input, select, textarea {
+    font-family: 'Vazirmatn', 'Tahoma', 'Segoe UI', sans-serif !important;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}

@@ -1,0 +1,31 @@
+# OS and editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Composer and Node dependencies (if added later)
+vendor/
+node_modules/
+
+# Test and coverage artifacts
+coverage/
+.phpunit.result.cache
+
+# Local WordPress / WooCommerce test environments
+wp-test/
+wordpress/
+wp-content/uploads/
+
+# Archives and generated artifacts
+*.zip
+*.log
+
+# Environment and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
