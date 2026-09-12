@@ -1,13 +1,13 @@
 <?php
 /**
- * Admin Settings Page for Woo Factor Invoice
+ * Admin Settings Page for WooFactor Invoice
  */
 defined('ABSPATH') || exit;
 
 add_action('admin_menu', function () {
     add_menu_page(
-        __('فاکتورساز ووکامرس', 'woo-factor'),
-        __('فاکتورساز ووکامرس', 'woo-factor'),
+        __('WooFactor', 'woo-factor'),
+        __('WooFactor', 'woo-factor'),
         'manage_woocommerce',
         'woo-factor',
         'woo_factor_render_settings_page',
@@ -56,11 +56,11 @@ function woo_factor_render_settings_page() {
     <div class="wrap" style="direction: rtl; text-align: right; max-width: 1060px;">
         <h1 style="display: flex; align-items: center; gap: 12px; margin-bottom: 24px;">
             <span class="dashicons dashicons-media-spreadsheet" style="font-size: 34px; width: 34px; height: 34px; color: #0f766e;"></span>
-            <span>تنظیمات پیشرفته فاکتورساز ووکامرس (نسخه ۲.۰)</span>
+            <span>تنظیمات پیشرفته افزونه فاکتورساز WooFactor</span>
         </h1>
 
         <?php if (isset($_GET['settings-updated'])): ?>
-            <div class="notice notice-success is-dismissible"><p>تنظیمات با موفقیت ذخیره شدند.</p></div>
+            <div class="notice notice-success is-dismissible"><p>تنظیمات WooFactor با موفقیت ذخیره شدند.</p></div>
         <?php endif; ?>
 
         <form method="post" action="options.php">
@@ -68,8 +68,8 @@ function woo_factor_render_settings_page() {
 
             <!-- Section 1: Template Selection -->
             <div style="background: #fff; padding: 22px 26px; border-radius: 10px; border: 1px solid #cbd5e1; margin-bottom: 22px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
-                <h2 style="border-bottom: 2px solid #0f766e; padding-bottom: 8px; color: #0f766e; margin-top: 0;">🎨 ۱. انتخاب قالب پیش‌فرض و رنگ‌بندی سازمانی</h2>
-                <p class="description" style="margin-bottom: 16px;">قالب دلخواه خود را برای صدور خودکار و پیش‌فرض فاکتورها انتخاب کنید:</p>
+                <h2 style="border-bottom: 2px solid #0f766e; padding-bottom: 8px; color: #0f766e; margin-top: 0;">🎨 ۱. انتخاب قالب پیش‌فرض و استایل فاکتور</h2>
+                <p class="description" style="margin-bottom: 16px;">طرح دلخواه خود را برای صدور فاکتورها انتخاب کنید:</p>
 
                 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
                     <?php foreach ($templates as $key => $tpl): 
@@ -87,17 +87,15 @@ function woo_factor_render_settings_page() {
                     <?php endforeach; ?>
                 </div>
 
-                <div style="margin-top: 20px; display: flex; align-items: center; gap: 20px;">
-                    <div>
-                        <label><strong>رنگ تم و المان‌های شاخص فاکتور:</strong></label><br>
-                        <input type="text" name="woo_factor_options[color]" value="<?php echo esc_attr($opts['color'] ?? '#0f766e'); ?>" class="woo_factor-color-field" data-default-color="#0f766e">
-                    </div>
+                <div style="margin-top: 20px;">
+                    <label><strong>رنگ سازمانی و تم شاخص فاکتورها:</strong></label><br>
+                    <input type="text" name="woo_factor_options[color]" value="<?php echo esc_attr($opts['color'] ?? '#0f766e'); ?>" class="woo_factor-color-field" data-default-color="#0f766e">
                 </div>
             </div>
 
             <!-- Section 2: Seller & Legal Information -->
             <div style="background: #fff; padding: 22px 26px; border-radius: 10px; border: 1px solid #cbd5e1; margin-bottom: 22px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
-                <h2 style="border-bottom: 2px solid #0f766e; padding-bottom: 8px; color: #0f766e; margin-top: 0;">🏢 ۲. مشخصات هویتی و حقوقی فروشنده (دارایی / رسمی)</h2>
+                <h2 style="border-bottom: 2px solid #0f766e; padding-bottom: 8px; color: #0f766e; margin-top: 0;">🏢 ۲. مشخصات هویتی و رسمی فروشنده (دارایی / شرکتی)</h2>
                 
                 <table class="form-table" role="presentation">
                     <tr>
@@ -121,8 +119,15 @@ function woo_factor_render_settings_page() {
                         <td><input name="woo_factor_options[shop_postal_code]" type="text" value="<?php echo esc_attr($opts['shop_postal_code'] ?? ''); ?>" class="regular-text" placeholder="مثال: ۱۹۸۵۷۱۱۱۱۱"></td>
                     </tr>
                     <tr>
-                        <th scope="row"><label>تلفن‌های تماس و پشتیبانی</label></th>
+                        <th scope="row"><label>تلفن ثابت پشتیبانی</label></th>
                         <td><input name="woo_factor_options[shop_phone]" type="text" value="<?php echo esc_attr($opts['shop_phone']); ?>" class="regular-text" placeholder="مثال: ۰۲۱-۸۸۸۸۸۸۸۸"></td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label>شماره موبایل فرستنده (برچسب پستی)</label></th>
+                        <td>
+                            <input name="woo_factor_options[sender_mobile]" type="text" value="<?php echo esc_attr($opts['sender_mobile'] ?? ''); ?>" class="regular-text" placeholder="مثال: ۰۹۱۲۳۴۵۶۷۸۹">
+                            <p class="description">جهت درج مستقیم در بخش فرستنده برچسب پستی مرسولات برای تماس مامور پست یا پیک.</p>
+                        </td>
                     </tr>
                     <tr>
                         <th scope="row"><label>ایمیل رسمی فروشگاه</label></th>
@@ -137,7 +142,7 @@ function woo_factor_render_settings_page() {
 
             <!-- Section 3: Logo & Stamp Upload -->
             <div style="background: #fff; padding: 22px 26px; border-radius: 10px; border: 1px solid #cbd5e1; margin-bottom: 22px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
-                <h2 style="border-bottom: 2px solid #0f766e; padding-bottom: 8px; color: #0f766e; margin-top: 0;">🖼️ ۳. لوگوی اختصاصی و تصویر مهر/امضا</h2>
+                <h2 style="border-bottom: 2px solid #0f766e; padding-bottom: 8px; color: #0f766e; margin-top: 0;">🖼️ ۳. لوگو و مهر و امضای اختصاصی فروشگاه</h2>
                 
                 <table class="form-table" role="presentation">
                     <tr>
@@ -157,7 +162,7 @@ function woo_factor_render_settings_page() {
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row"><label>تصویر مهر و امضای رسمی (شفاف PNG)</label></th>
+                        <th scope="row"><label>تصویر مهر و امضای رسمی (PNG شفاف)</label></th>
                         <td>
                             <input type="hidden" name="woo_factor_options[stamp_image_id]" id="woo_factor_stamp_id" value="<?php echo esc_attr($opts['stamp_image_id'] ?? ''); ?>">
                             <div id="woo_factor_stamp_preview" style="margin-bottom: 10px;">
@@ -170,7 +175,7 @@ function woo_factor_render_settings_page() {
                             </div>
                             <button type="button" class="button" id="woo_factor_upload_stamp_btn">انتخاب تصویر مهر و امضا</button>
                             <button type="button" class="button" id="woo_factor_remove_stamp_btn" style="<?php echo empty($opts['stamp_image_id']) ? 'display:none;' : ''; ?>">حذف تصویر مهر</button>
-                            <p class="description">پیشنهاد می‌شود از تصویر با پس‌زمینه شفاف (فرمت PNG) استفاده فرمایید تا روی کادر مهر قرار گیرد.</p>
+                            <p class="description">پیشنهاد می‌شود از تصویر با پس‌زمینه شفاف (PNG) استفاده کنید تا روی کادر مهر قرار گیرد.</p>
                         </td>
                     </tr>
                     <tr>
@@ -182,30 +187,90 @@ function woo_factor_render_settings_page() {
                 </table>
             </div>
 
-            <!-- Section 4: Display Elements & Features -->
+            <!-- Section 4: Checkout Customer Type (Natural / Legal) -->
             <div style="background: #fff; padding: 22px 26px; border-radius: 10px; border: 1px solid #cbd5e1; margin-bottom: 22px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
-                <h2 style="border-bottom: 2px solid #0f766e; padding-bottom: 8px; color: #0f766e; margin-top: 0;">⚡ ۴. ستون‌ها و امکانات پیشرفته فاکتور</h2>
+                <h2 style="border-bottom: 2px solid #0f766e; padding-bottom: 8px; color: #0f766e; margin-top: 0;">👥 ۴. تنظیمات مشتری حقیقی و حقوقی در صفحه تسویه حساب</h2>
                 
                 <table class="form-table" role="presentation">
                     <tr>
-                        <th scope="row">نمایش کدهای رهگیری</th>
+                        <th scope="row">انتخاب نوع مشتری در تسویه حساب</th>
                         <td>
-                            <fieldset>
-                                <label style="display: block; margin-bottom: 6px;">
-                                    <input name="woo_factor_options[show_qrcode]" type="checkbox" value="yes" <?php checked($opts['show_qrcode'] ?? 'yes', 'yes'); ?>>
-                                    <strong>تولید کد QR هوشمند:</strong> درج بارکد دو بعدی QR برای رهگیری و اعتبارسنجی آنلاین فاکتور با موبایل
-                                </label>
-                                <label style="display: block;">
-                                    <input name="woo_factor_options[show_barcode]" type="checkbox" value="yes" <?php checked($opts['show_barcode'] ?? 'yes', 'yes'); ?>>
-                                    <strong>بارکد خطی Code128:</strong> درج بارکد استاندارد شماره سفارش جهت دستگاه‌های بارکدخوان و انبارداری
-                                </label>
-                            </fieldset>
+                            <label>
+                                <input name="woo_factor_options[enable_checkout_customer_type]" type="checkbox" value="yes" <?php checked($opts['enable_checkout_customer_type'] ?? 'yes', 'yes'); ?>>
+                                فعال‌سازی انتخاب شخص حقیقی یا حقوقی (شرکت) به همراه فیلدهای کد ملی و کد اقتصادی در صفحه پرداخت
+                            </label>
+                            <p class="description">در صورت فعال بودن، مشتریان شرکتی می‌توانند شناسه ملی و کد اقتصادی خود را وارد کنند تا در فاکتور رسمی دارایی درج شود.</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Section 5: SMS Notifications Gateway -->
+            <div style="background: #fff; padding: 22px 26px; border-radius: 10px; border: 1px solid #cbd5e1; margin-bottom: 22px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                <h2 style="border-bottom: 2px solid #0f766e; padding-bottom: 8px; color: #0f766e; margin-top: 0;">📱 ۵. تنظیمات ارسال پیامک فاکتور (SMS Gateway)</h2>
+                
+                <table class="form-table" role="presentation">
+                    <tr>
+                        <th scope="row">ارسال پیامک فاکتور به مشتری</th>
+                        <td>
+                            <label>
+                                <input name="woo_factor_options[sms_enabled]" type="checkbox" value="yes" <?php checked($opts['sms_enabled'] ?? 'no', 'yes'); ?>>
+                                ارسال خودکار پیامک حاوی لینک و جزئیات فاکتور پس از تغییر وضعیت سفارش
+                            </label>
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row">شخصی‌سازی ستون‌های اقلام</th>
+                        <th scope="row"><label>سامانه پیامکی</label></th>
+                        <td>
+                            <select name="woo_factor_options[sms_gateway]" style="width: 250px;">
+                                <option value="ippanel" <?php selected($opts['sms_gateway'] ?? 'ippanel', 'ippanel'); ?>>فراز اس‌ام‌اس / IPPanel</option>
+                                <option value="kavenegar" <?php selected($opts['sms_gateway'] ?? '', 'kavenegar'); ?>>کاوه‌نگار (Kavenegar)</option>
+                                <option value="melipayamak" <?php selected($opts['sms_gateway'] ?? '', 'melipayamak'); ?>>ملی‌پیامک (Melipayamak)</option>
+                                <option value="smsir" <?php selected($opts['sms_gateway'] ?? '', 'smsir'); ?>>SMS.ir (نسخه ۲)</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label>کلید وب‌سرویس / نام کاربری</label></th>
+                        <td><input name="woo_factor_options[sms_api_key]" type="text" value="<?php echo esc_attr($opts['sms_api_key'] ?? ''); ?>" class="regular-text" placeholder="API Key یا نام کاربری پنل"></td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label>شماره خط ارسال‌کننده</label></th>
+                        <td><input name="woo_factor_options[sms_sender]" type="text" value="<?php echo esc_attr($opts['sms_sender'] ?? ''); ?>" class="regular-text" placeholder="مثال: 3000505 یا شماره اختصاصی"></td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label>کد الگو / شناسه پترن (Pattern Code)</label></th>
+                        <td>
+                            <input name="woo_factor_options[sms_pattern]" type="text" value="<?php echo esc_attr($opts['sms_pattern'] ?? ''); ?>" class="regular-text" placeholder="کد متن پترن تایید شده در پنل">
+                            <p class="description">متغیرهای ارسالی: <code>order_id</code> (شماره سفارش)، <code>name</code> (نام مشتری)، <code>total</code> (مبلغ) و <code>invoice_url</code> (لینک فاکتور)</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label>ارسال در وضعیت سفارش:</label></th>
+                        <td>
+                            <select name="woo_factor_options[sms_trigger_status]">
+                                <option value="completed" <?php selected($opts['sms_trigger_status'] ?? 'completed', 'completed'); ?>>تکمیل شده (Completed)</option>
+                                <option value="processing" <?php selected($opts['sms_trigger_status'] ?? '', 'processing'); ?>>در حال انجام (Processing)</option>
+                                <option value="on-hold" <?php selected($opts['sms_trigger_status'] ?? '', 'on-hold'); ?>>در انتظار بررسی (On-Hold)</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Section 6: Display Elements & Features -->
+            <div style="background: #fff; padding: 22px 26px; border-radius: 10px; border: 1px solid #cbd5e1; margin-bottom: 22px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                <h2 style="border-bottom: 2px solid #0f766e; padding-bottom: 8px; color: #0f766e; margin-top: 0;">⚡ ۶. ستون‌ها و المان‌های ظاهری فاکتور</h2>
+                
+                <table class="form-table" role="presentation">
+                    <tr>
+                        <th scope="row">بارکد و ردیف‌های کالا</th>
                         <td>
                             <fieldset>
+                                <label style="display: block; margin-bottom: 6px;">
+                                    <input name="woo_factor_options[show_barcode]" type="checkbox" value="yes" <?php checked($opts['show_barcode'] ?? 'yes', 'yes'); ?>>
+                                    <strong>بارکد خطی استاندارد Code128:</strong> درج بارکد شماره سفارش جهت بارکدخوان و انبارداری
+                                </label>
                                 <label style="display: block; margin-bottom: 6px;">
                                     <input name="woo_factor_options[show_product_image]" type="checkbox" value="yes" <?php checked($opts['show_product_image'] ?? 'yes', 'yes'); ?>>
                                     نمایش تصویر بندانگشتی محصول در جدول اقلام
@@ -232,14 +297,14 @@ function woo_factor_render_settings_page() {
                                 <input name="woo_factor_options[show_watermark]" type="checkbox" value="yes" <?php checked($opts['show_watermark'] ?? 'yes', 'yes'); ?>>
                                 فعال‌سازی واترمارک پس‌زمینه (مانند «پرداخت شد»، «باطل شد» و «پیش‌فاکتور»)
                             </label>
-                            <input name="woo_factor_options[watermark_text]" type="text" value="<?php echo esc_attr($opts['watermark_text'] ?? ''); ?>" class="regular-text" placeholder="متن سفارشی (در صورت خالی بودن، خودکار بر اساس وضعیت سفارش تعیین می‌شود)">
+                            <input name="woo_factor_options[watermark_text]" type="text" value="<?php echo esc_attr($opts['watermark_text'] ?? ''); ?>" class="regular-text" placeholder="متن دلخواه (در صورت خالی بودن خودکار تعیین می‌شود)">
                         </td>
                     </tr>
                     <tr>
                         <th scope="row"><label>شرایط، گارانتی و تعهدات خرید</label></th>
                         <td>
                             <textarea name="woo_factor_options[invoice_terms]" rows="3" class="large-text"><?php echo esc_textarea($opts['invoice_terms'] ?? ''); ?></textarea>
-                            <p class="description">متن قوانین، شرایط مرجوعی کالا یا گارانتی که در پایین فاکتور نمایش داده می‌شود.</p>
+                            <p class="description">متن قوانین، شرایط مرجوعی یا گارانتی که در انتهای فاکتور نمایش داده می‌شود.</p>
                         </td>
                     </tr>
                     <tr>
@@ -251,19 +316,19 @@ function woo_factor_render_settings_page() {
                 </table>
             </div>
 
-            <!-- Section 5: Automated Delivery & Account -->
+            <!-- Section 7: Email & My Account -->
             <div style="background: #fff; padding: 22px 26px; border-radius: 10px; border: 1px solid #cbd5e1; margin-bottom: 22px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
-                <h2 style="border-bottom: 2px solid #0f766e; padding-bottom: 8px; color: #0f766e; margin-top: 0;">🚀 ۵. ادغام با ایمیل، حساب کاربری و شماره فاکتور</h2>
+                <h2 style="border-bottom: 2px solid #0f766e; padding-bottom: 8px; color: #0f766e; margin-top: 0;">🚀 ۷. ادغام با ایمیل، حساب کاربری و شماره فاکتور</h2>
                 
                 <table class="form-table" role="presentation">
                     <tr>
-                        <th scope="row"><label>ارسال لینک فاکتور با ایمیل مشتری</label></th>
+                        <th scope="row"><label>ارسال لینک فاکتور در ایمیل‌های ووکامرس</label></th>
                         <td>
-                            <label><input name="woo_factor_options[attach_woocommerce]" type="checkbox" value="yes" <?php checked($opts['attach_woocommerce'] ?? 'yes', 'yes'); ?>> اضافه کردن دکمه دسترسی سریع و چاپ آنلاین فاکتور در ایمیل‌های ارسالی سفارش برای مشتری</label>
+                            <label><input name="woo_factor_options[attach_woocommerce]" type="checkbox" value="yes" <?php checked($opts['attach_woocommerce'] ?? 'yes', 'yes'); ?>> اضافه کردن دکمه دسترسی سریع و چاپ آنلاین فاکتور در ایمیل‌های ارسالی برای مشتری</label>
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row"><label>نمایش در پنل حساب کاربری مشتری</label></th>
+                        <th scope="row"><label>نمایش در پنل کاربری مشتری</label></th>
                         <td>
                             <label><input name="woo_factor_options[myaccount_page]" type="checkbox" value="yes" <?php checked($opts['myaccount_page'] ?? 'yes', 'yes'); ?>> اضافه کردن دکمه «دریافت فاکتور» در لیست سفارشات کاربر در حساب کاربری</label>
                         </td>
@@ -278,7 +343,7 @@ function woo_factor_render_settings_page() {
                 </table>
             </div>
 
-            <?php submit_button('ذخیره تغییرات و به‌روزرسانی فاکتورساز', 'primary large'); ?>
+            <?php submit_button('ذخیره تغییرات فاکتورساز WooFactor', 'primary large'); ?>
         </form>
     </div>
 

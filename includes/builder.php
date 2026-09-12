@@ -29,7 +29,11 @@ class Woo_Factor_Invoice_Builder {
         $jalali_date = woo_factor_jdate($timestamp, false);
         $jalali_time = woo_factor_jdate($timestamp, true);
 
-        // Buyer Data
+        // Buyer Customer Type (Natural / Legal)
+        $customer_type = $order->get_meta('_billing_customer_type') 
+            ?: $order->get_meta('billing_customer_type') 
+            ?: (!empty($order->get_billing_company()) ? 'legal' : 'natural');
+
         $national_code = $order->get_meta('_billing_national_code') 
             ?: $order->get_meta('billing_national_code') 
             ?: $order->get_meta('national_code') 
@@ -43,6 +47,10 @@ class Woo_Factor_Invoice_Builder {
             ?: $order->get_meta('_economic_code')
             ?: '';
 
+        $registration_no = $order->get_meta('_billing_registration_no')
+            ?: $order->get_meta('billing_registration_no')
+            ?: '';
+
         $buyer_name = trim($order->get_billing_first_name() . ' ' . $order->get_billing_last_name());
         if (empty($buyer_name)) {
             $buyer_name = $order->get_formatted_billing_full_name();
@@ -50,9 +58,11 @@ class Woo_Factor_Invoice_Builder {
 
         $buyer = [
             'name'             => $buyer_name ?: 'مشتری محترم',
+            'customer_type'    => $customer_type,
             'company'          => $order->get_billing_company(),
             'national_id'      => $national_code,
             'economic_id'      => $economic_code,
+            'registration_no'  => $registration_no,
             'phone'            => $order->get_billing_phone(),
             'email'            => $order->get_billing_email(),
             'state'            => $order->get_billing_state(),
@@ -109,7 +119,7 @@ class Woo_Factor_Invoice_Builder {
                 }
             }
 
-            // Variation attributes / meta
+            // Variation attributes / item meta
             $meta_strings = [];
             $formatted_meta = $item->get_formatted_meta_data('');
             foreach ($formatted_meta as $m) {
@@ -153,14 +163,7 @@ class Woo_Factor_Invoice_Builder {
         ];
 
         // Barcode (Order Number)
-        $barcode_svg = Woo_Factor_Barcode_128::get_svg((string)$order->get_order_number(), 45, 1.5);
-
-        // QR Code (Invoice Verification Link or Summary)
-        $inv_url = woo_factor_invoice_url($order);
-        if (empty($inv_url)) {
-            $inv_url = home_url('/?order_verify=' . $order->get_id());
-        }
-        $qrcode_svg = Woo_Factor_QRCode::get_svg($inv_url, 95, '#1e293b');
+        $barcode_svg = Woo_Factor_Barcode_128::get_svg((string)$order->get_order_number(), 42, 1.5);
 
         // Watermark calculation
         $watermark_text = !empty($opts['watermark_text']) ? $opts['watermark_text'] : '';
@@ -202,7 +205,6 @@ class Woo_Factor_Invoice_Builder {
             'items'                => $items,
             'totals'               => $totals,
             'barcode_svg'          => $barcode_svg,
-            'qrcode_svg'           => $qrcode_svg,
             'customer_note'        => $order->get_customer_note(),
             'footer_note'          => $opts['footer_note'] ?? 'از خرید و اعتماد شما سپاسگزاریم.',
             'invoice_terms'        => $opts['invoice_terms'] ?? '',
@@ -211,7 +213,6 @@ class Woo_Factor_Invoice_Builder {
             'color'                => woo_factor_normalize_color($opts['color'] ?? ''),
             'watermark_text'       => $watermark_text,
             'show_barcode'         => ($opts['show_barcode'] ?? 'yes') === 'yes',
-            'show_qrcode'          => ($opts['show_qrcode'] ?? 'yes') === 'yes',
             'show_product_image'   => ($opts['show_product_image'] ?? 'yes') === 'yes',
             'show_sku'             => ($opts['show_sku'] ?? 'yes') === 'yes',
             'show_tax_column'      => ($opts['show_tax_column'] ?? 'yes') === 'yes',

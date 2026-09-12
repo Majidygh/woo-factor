@@ -40,8 +40,8 @@ function woo_factor_render_manual_invoice_page() {
                         <label><strong>قالب فاکتور:</strong></label><br>
                         <select name="template" style="width: 100%;">
                             <option value="classic">قالب رسمی دارایی (Classic)</option>
-                            <option value="modern">قالب مدرن و مینیمال (Modern)</option>
-                            <option value="commercial">قالب تجاری لوکس (Commercial)</option>
+                            <option value="modern">قالب مدرن و شکیل (Modern)</option>
+                            <option value="thermal">قالب فیش‌پرینتر حرارتی (Thermal 80mm)</option>
                         </select>
                     </div>
                     <div>
@@ -248,7 +248,6 @@ add_action('wp_ajax_woo_factor_generate_manual_invoice', function () {
         'items'                => $items,
         'totals'               => $totals,
         'barcode_svg'          => Woo_Factor_Barcode_128::get_svg($inv_num, 40, 1.5),
-        'qrcode_svg'           => Woo_Factor_QRCode::get_svg($inv_num, 90, '#0f172a'),
         'customer_note'        => sanitize_textarea_field($_POST['note'] ?? ''),
         'footer_note'          => $opts['footer_note'] ?? 'از خرید شما سپاسگزاریم.',
         'invoice_terms'        => $opts['invoice_terms'] ?? '',
@@ -257,7 +256,6 @@ add_action('wp_ajax_woo_factor_generate_manual_invoice', function () {
         'color'                => woo_factor_normalize_color($opts['color'] ?? ''),
         'watermark_text'       => 'پرداخت شد',
         'show_barcode'         => ($opts['show_barcode'] ?? 'yes') === 'yes',
-        'show_qrcode'          => ($opts['show_qrcode'] ?? 'yes') === 'yes',
         'show_product_image'   => false,
         'show_sku'             => false,
         'show_tax_column'      => ($opts['show_tax_column'] ?? 'yes') === 'yes',

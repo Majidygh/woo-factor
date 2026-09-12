@@ -1,0 +1,42 @@
+﻿name: Release WooFactor
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build_release:
+    name: Publish Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Verify or Build WooFactor.zip
+        run: |
+          if [ ! -f WooFactor.zip ]; then
+            zip -r WooFactor.zip . -x ".git/*" ".github/*" "tests/*"
+          fi
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: WooFactor ${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+          body: |
+            ## WooFactor ${{ github.ref_name }}
+
+            ### Highlights
+            - Redesigned invoice & 80mm POS thermal receipt templates
+            - Customer legal/natural entity checkout selector
+            - Pattern-based Iranian SMS gateway integration (IPPanel, Kavenegar, Melipayamak, SMS.ir)
+            - Advanced shipping label with sender/receiver details & barcodes
+            - Performance optimizations & security hardening
+          files: |
+            WooFactor.zip

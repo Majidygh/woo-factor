@@ -1,7 +1,7 @@
 <?php
 /**
- * Template 1: Classic & Official (استاندارد صورتحساب رسمی سازمان امور مالیاتی کشور)
- * Optimized for standard A4 portrait printing and corporate compliance.
+ * Template 1: Classic & Official (صورتحساب رسمی فروش کالا و خدمات - استاندارد سازمان امور مالیاتی)
+ * Conforming to Article 19 of Value Added Tax law with Legal/Natural buyer distinction.
  */
 defined('ABSPATH') || exit;
 
@@ -13,12 +13,14 @@ $items = $data['items'] ?? [];
 $logo_url = !empty($seller['logo_url']) ? $seller['logo_url'] : '';
 $stamp_url = !empty($data['stamp_url']) ? $data['stamp_url'] : '';
 $currency = $totals['currency'] ?? 'تومان';
+$is_legal_buyer = !empty($buyer['company']) || !empty($buyer['economic_id']) || (($buyer['customer_type'] ?? '') === 'legal');
 ?>
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
     <title>صورتحساب رسمی فروش کالا و خدمات - <?php echo esc_html($data['invoice_number']); ?></title>
     <style>
         @page { size: A4 portrait; margin: 8mm; }
@@ -216,7 +218,7 @@ $currency = $totals['currency'] ?? 'تومان';
         .signatures-grid {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px;
+            gap: 12px;
             margin-top: 12px;
             margin-bottom: 8px;
         }
@@ -309,7 +311,7 @@ $currency = $totals['currency'] ?? 'تومان';
         <tr>
             <td class="lbl">شناسه ملی / کد ملی:</td>
             <td class="val"><?php echo !empty($seller['national_id']) ? woo_factor_fa_digits($seller['national_id']) : '-'; ?></td>
-            <td class="lbl">شماره ثبت / مجوز:</td>
+            <td class="lbl">شماره ثبت / پروانه:</td>
             <td class="val"><?php echo !empty($seller['registration_no']) ? woo_factor_fa_digits($seller['registration_no']) : '-'; ?></td>
         </tr>
         <tr>
@@ -326,13 +328,13 @@ $currency = $totals['currency'] ?? 'تومان';
 
     <!-- Buyer Information -->
     <div class="section-header">
-        <span>ب) مشخصات خریدار</span>
+        <span>ب) مشخصات خریدار (<?php echo $is_legal_buyer ? 'مشتری حقوقی / شرکت' : 'مشتری حقیقی'; ?>)</span>
     </div>
     <table class="grid-table">
         <tr>
             <td class="lbl">نام خریدار / شرکت:</td>
-            <td class="val"><strong><?php echo esc_html($buyer['name']); ?></strong></td>
-            <td class="lbl">کد ملی / شناسه ملی:</td>
+            <td class="val"><strong><?php echo esc_html($buyer['company'] ?: $buyer['name']); ?></strong></td>
+            <td class="lbl"><?php echo $is_legal_buyer ? 'شناسه ملی شرکت:' : 'کد ملی:'; ?></td>
             <td class="val"><?php echo !empty($buyer['national_id']) ? woo_factor_fa_digits($buyer['national_id']) : '-'; ?></td>
         </tr>
         <tr>
@@ -454,11 +456,10 @@ $currency = $totals['currency'] ?? 'تومان';
             <div style="margin-top: 25px; font-size: 9.5px; color: #94a3b8;">کالا و خدمات فوق تحویل گرفته شد.</div>
         </div>
         <div class="sig-box" style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px;">
-            <div class="sig-title" style="width: 100%;">اصالت فاکتور و رهگیری</div>
-            <?php if (!empty($data['show_qrcode']) && !empty($data['qrcode_svg'])): ?>
-                <div style="display: inline-block;"><?php echo $data['qrcode_svg']; ?></div>
-            <?php elseif (!empty($data['show_barcode']) && !empty($data['barcode_svg'])): ?>
+            <div class="sig-title" style="width: 100%;">بارکد رهگیری سفارش</div>
+            <?php if (!empty($data['show_barcode']) && !empty($data['barcode_svg'])): ?>
                 <div style="display: inline-block;"><?php echo $data['barcode_svg']; ?></div>
+                <div style="font-size: 9px; color: #64748b; margin-top: 2px;">#<?php echo woo_factor_fa_digits($data['order_number']); ?></div>
             <?php endif; ?>
         </div>
     </div>

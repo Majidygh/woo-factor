@@ -1,13 +1,13 @@
 <?php
 /**
- * Template 2: Modern & Minimalist (طراحی مدرن، شیک و کارت‌محور)
- * Perfect for digital products, modern e-commerce stores, and high-tech retailers.
+ * Template 2: Modern Standard (قالب مدرن و استاندارد WooFactor)
+ * Ultra-clean, border-perfect, card-based layout without QR code.
  */
 defined('ABSPATH') || exit;
 
-$brand = woo_factor_normalize_color($data['color'] ?? '', '#2563EB');
-$brand_dark = woo_factor_color_shade($brand, -25, '#1E40AF');
-$brand_light = woo_factor_color_shade($brand, 90, '#EFF6FF');
+$brand = woo_factor_normalize_color($data['color'] ?? '', '#0284c7');
+$brand_dark = woo_factor_color_shade($brand, -25, '#0369a1');
+$brand_light = woo_factor_color_shade($brand, 90, '#f0f9ff');
 $seller = $data['seller'] ?? [];
 $buyer = $data['buyer'] ?? [];
 $totals = $data['totals'] ?? [];
@@ -16,8 +16,7 @@ $logo_url = !empty($seller['logo_url']) ? $seller['logo_url'] : '';
 $stamp_url = !empty($data['stamp_url']) ? $data['stamp_url'] : '';
 $currency = $totals['currency'] ?? 'تومان';
 
-// Status color tag
-$status_color = '#10b981'; // completed / processing
+$status_color = '#10b981';
 if (in_array($data['status'], ['pending', 'on-hold'], true)) {
     $status_color = '#f59e0b';
 } elseif (in_array($data['status'], ['cancelled', 'failed'], true)) {
@@ -29,7 +28,8 @@ if (in_array($data['status'], ['pending', 'on-hold'], true)) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>فاکتور خرید مدرن - <?php echo esc_html($data['invoice_number']); ?></title>
+    <meta name="robots" content="noindex, nofollow">
+    <title>فاکتور خرید - <?php echo esc_html($data['invoice_number']); ?></title>
     <style>
         @page { size: A4 portrait; margin: 8mm; }
         * { 
@@ -55,7 +55,7 @@ if (in_array($data['status'], ['pending', 'on-hold'], true)) {
             max-width: 820px;
             margin: 0 auto;
             background: #ffffff;
-            border-radius: 12px;
+            border-radius: 10px;
             padding: 20px;
             border: 1px solid #e2e8f0;
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
@@ -67,8 +67,8 @@ if (in_array($data['status'], ['pending', 'on-hold'], true)) {
             transform: translate(-50%, -50%) rotate(-28deg);
             font-size: 64px;
             font-weight: 900;
-            color: rgba(37, 99, 235, 0.05);
-            border: 6px dashed rgba(37, 99, 235, 0.08);
+            color: rgba(2, 132, 199, 0.05);
+            border: 6px dashed rgba(2, 132, 199, 0.08);
             padding: 15px 40px;
             border-radius: 16px;
             pointer-events: none;
@@ -78,7 +78,7 @@ if (in_array($data['status'], ['pending', 'on-hold'], true)) {
         }
         .header-banner {
             background: linear-gradient(135deg, <?php echo esc_attr($brand); ?> 0%, <?php echo esc_attr($brand_dark); ?> 100%);
-            border-radius: 10px;
+            border-radius: 8px;
             color: #ffffff;
             padding: 16px 20px;
             display: flex;
@@ -95,7 +95,7 @@ if (in_array($data['status'], ['pending', 'on-hold'], true)) {
         }
         .logo-wrapper {
             background: #ffffff;
-            border-radius: 8px;
+            border-radius: 6px;
             padding: 6px 10px;
             display: flex;
             align-items: center;
@@ -202,9 +202,9 @@ if (in_array($data['status'], ['pending', 'on-hold'], true)) {
             text-align: right;
         }
         .product-thumb {
-            width: 38px;
-            height: 38px;
-            border-radius: 6px;
+            width: 36px;
+            height: 36px;
+            border-radius: 4px;
             object-fit: cover;
             border: 1px solid #e2e8f0;
             flex-shrink: 0;
@@ -269,20 +269,21 @@ if (in_array($data['status'], ['pending', 'on-hold'], true)) {
             flex-direction: column;
             gap: 10px;
         }
-        .barcodes-card {
+        .barcode-card {
             background: #f8fafc;
             border: 1px solid #e2e8f0;
             border-radius: 8px;
             padding: 12px;
             display: flex;
-            justify-content: space-around;
+            justify-content: space-between;
             align-items: center;
         }
         .stamp-box {
             border: 1px dashed #cbd5e1;
-            border-radius: 8px;
-            padding: 10px;
-            min-height: 85px;
+            border-radius: 6px;
+            padding: 8px;
+            min-height: 75px;
+            min-width: 130px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -290,8 +291,8 @@ if (in_array($data['status'], ['pending', 'on-hold'], true)) {
             background: #fff;
         }
         .stamp-box img {
-            max-height: 65px;
-            max-width: 140px;
+            max-height: 60px;
+            max-width: 120px;
             object-fit: contain;
         }
         .footer-bar {
@@ -327,7 +328,7 @@ if (in_array($data['status'], ['pending', 'on-hold'], true)) {
             <?php endif; ?>
             <div class="brand-text">
                 <h1><?php echo esc_html($seller['name']); ?></h1>
-                <p>فاکتور خرید سفارش شماره <?php echo woo_factor_fa_digits($data['order_number']); ?></p>
+                <p>صورتحساب خرید سفارش #<?php echo woo_factor_fa_digits($data['order_number']); ?></p>
             </div>
         </div>
         <div class="header-meta">
@@ -346,7 +347,7 @@ if (in_array($data['status'], ['pending', 'on-hold'], true)) {
                 <div class="info-row"><span class="lbl">شناسه ملی / کد اقتصادی:</span><span class="val"><?php echo woo_factor_fa_digits($seller['national_id']); ?></span></div>
             <?php endif; ?>
             <?php if (!empty($seller['phone'])): ?>
-                <div class="info-row"><span class="lbl">تلفن پشتیبانی:</span><span class="val"><?php echo woo_factor_fa_digits($seller['phone']); ?></span></div>
+                <div class="info-row"><span class="lbl">تلفن تماس:</span><span class="val"><?php echo woo_factor_fa_digits($seller['phone']); ?></span></div>
             <?php endif; ?>
             <?php if (!empty($seller['address'])): ?>
                 <div class="info-row"><span class="lbl">آدرس:</span><span class="val"><?php echo esc_html($seller['address']); ?></span></div>
@@ -355,9 +356,9 @@ if (in_array($data['status'], ['pending', 'on-hold'], true)) {
 
         <div class="card-box">
             <div class="card-title">👤 مشخصات خریدار</div>
-            <div class="info-row"><span class="lbl">نام مشتری:</span><span class="val"><?php echo esc_html($buyer['name']); ?></span></div>
+            <div class="info-row"><span class="lbl">نام خریدار:</span><span class="val"><?php echo esc_html($buyer['company'] ?: $buyer['name']); ?></span></div>
             <?php if (!empty($buyer['national_id'])): ?>
-                <div class="info-row"><span class="lbl">کد ملی:</span><span class="val"><?php echo woo_factor_fa_digits($buyer['national_id']); ?></span></div>
+                <div class="info-row"><span class="lbl">کد ملی / شناسه:</span><span class="val"><?php echo woo_factor_fa_digits($buyer['national_id']); ?></span></div>
             <?php endif; ?>
             <?php if (!empty($buyer['phone'])): ?>
                 <div class="info-row"><span class="lbl">شماره تماس:</span><span class="val"><?php echo woo_factor_fa_digits($buyer['phone']); ?></span></div>
@@ -421,19 +422,12 @@ if (in_array($data['status'], ['pending', 'on-hold'], true)) {
                 </div>
             <?php endif; ?>
 
-            <!-- Barcode & QR Code Section -->
-            <div class="barcodes-card">
+            <!-- Barcode & Stamp Section -->
+            <div class="barcode-card">
                 <?php if (!empty($data['show_barcode']) && !empty($data['barcode_svg'])): ?>
-                    <div style="text-align: center;">
+                    <div style="text-align: right;">
                         <div><?php echo $data['barcode_svg']; ?></div>
-                        <div style="font-size: 9.5px; color: #64748b; margin-top: 3px;">بارکد پیگیری سفارش</div>
-                    </div>
-                <?php endif; ?>
-
-                <?php if (!empty($data['show_qrcode']) && !empty($data['qrcode_svg'])): ?>
-                    <div style="text-align: center;">
-                        <div><?php echo $data['qrcode_svg']; ?></div>
-                        <div style="font-size: 9.5px; color: #64748b; margin-top: 3px;">اسکن و مشاهده آنلاین</div>
+                        <div style="font-size: 9px; color: #64748b; margin-top: 3px;">بارکد پیگیری سفارش #<?php echo woo_factor_fa_digits($data['order_number']); ?></div>
                     </div>
                 <?php endif; ?>
 

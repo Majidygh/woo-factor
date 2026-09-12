@@ -1,6 +1,6 @@
 <?php
 /**
- * WooCommerce Hooks Integration & Bulk Actions
+ * WooFactor Hooks Integration, Checkout Fields, Bulk Actions & SMS Triggers
  */
 defined('ABSPATH') || exit;
 
@@ -38,8 +38,8 @@ add_filter('bulk_actions-edit-shop_order', 'woo_factor_register_bulk_actions');
 add_filter('bulk_actions-woocommerce_page_wc-orders', 'woo_factor_register_bulk_actions');
 
 function woo_factor_register_bulk_actions($actions) {
-    $actions['woo_factor_bulk_invoices'] = __('🖨️ چاپ گروهی فاکتورها (ووفاکتور)', 'woo-factor');
-    $actions['woo_factor_bulk_labels'] = __('📮 چاپ گروهی برچسب‌های پستی (ووفاکتور)', 'woo-factor');
+    $actions['woo_factor_bulk_invoices'] = __('🖨️ چاپ گروهی فاکتورها (WooFactor)', 'woo-factor');
+    $actions['woo_factor_bulk_labels'] = __('📮 چاپ گروهی برچسب‌های پستی (WooFactor)', 'woo-factor');
     return $actions;
 }
 
@@ -203,8 +203,24 @@ add_action('woocommerce_email_after_order_table', function ($order, $sent_to_adm
     echo '</div>';
 }, 10, 4);
 
-// 7. Add National ID field to WooCommerce Checkout if enabled
+// 7. Natural / Legal Customer Fields in Checkout
 add_filter('woocommerce_billing_fields', function ($fields) {
+    $opts = woo_factor_options();
+
+    if (($opts['enable_checkout_customer_type'] ?? 'yes') === 'yes') {
+        $fields['billing_customer_type'] = [
+            'type'        => 'select',
+            'label'       => __('نوع مشتری / خریدار', 'woo-factor'),
+            'options'     => [
+                'natural' => __('شخص حقیقی', 'woo-factor'),
+                'legal'   => __('شخص حقوقی / شرکت', 'woo-factor'),
+            ],
+            'required'    => false,
+            'class'       => ['form-row-wide'],
+            'priority'    => 21,
+        ];
+    }
+
     $fields['billing_national_code'] = [
         'type'        => 'text',
         'label'       => __('کد ملی / شناسه ملی', 'woo-factor'),
@@ -212,13 +228,27 @@ add_filter('woocommerce_billing_fields', function ($fields) {
         'required'    => false,
         'class'       => ['form-row-wide'],
         'clear'       => true,
-        'priority'    => 25,
+        'priority'    => 22,
     ];
+
+    $fields['billing_economic_code'] = [
+        'type'        => 'text',
+        'label'       => __('کد اقتصادی', 'woo-factor'),
+        'placeholder' => __('ویژه اشخاص حقوقی و شرکت‌ها', 'woo-factor'),
+        'required'    => false,
+        'class'       => ['form-row-wide'],
+        'clear'       => true,
+        'priority'    => 23,
+    ];
+
     return $fields;
 });
 
-// 8. Persist checkout national / economic codes onto the order
+// 8. Persist checkout fields to Order Meta
 add_action('woocommerce_checkout_create_order', function ($order, $data) {
+    if (isset($_POST['billing_customer_type'])) {
+        $order->update_meta_data('_billing_customer_type', sanitize_text_field(wp_unslash($_POST['billing_customer_type'])));
+    }
     if (isset($_POST['billing_national_code'])) {
         $order->update_meta_data('_billing_national_code', sanitize_text_field(wp_unslash($_POST['billing_national_code'])));
     }
@@ -226,3 +256,19 @@ add_action('woocommerce_checkout_create_order', function ($order, $data) {
         $order->update_meta_data('_billing_economic_code', sanitize_text_field(wp_unslash($_POST['billing_economic_code'])));
     }
 }, 10, 2);
+
+// 9. Automatic SMS Trigger on Order Status Change
+add_action('woocommerce_order_status_changed', function ($order_id, $old_status, $new_status, $order) {
+    $opts = woo_factor_options();
+    if (($opts['sms_enabled'] ?? 'no') !== 'yes') {
+        return;
+    }
+
+    $target_status = str_replace('wc-', '', $opts['sms_trigger_status'] ?? 'completed');
+    if ($new_status === $target_status) {
+        $sent = WooFactor_SMS::send_invoice_sms($order);
+        if ($sent) {
+            $order->add_order_note(__('پیامک لینک فاکتور WooFactor با موفقیت به مشتری ارسال شد.', 'woo-factor'));
+        }
+    }
+}, 10, 4);

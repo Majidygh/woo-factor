@@ -1,6 +1,7 @@
 <?php
 /**
- * Shipping Label Template - Pixel Perfect
+ * Shipping Label Template (برچسب پستی مرسوله)
+ * Conforming to Post and Courier delivery standards with customer note & sender mobile.
  */
 defined('ABSPATH') || exit;
 ?>
@@ -8,6 +9,7 @@ defined('ABSPATH') || exit;
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <meta name="robots" content="noindex, nofollow">
     <title>برچسب پستی سفارش <?php echo esc_html($data['order_number']); ?></title>
     <style>
         @page { size: A5 landscape; margin: 8mm; }
@@ -103,25 +105,40 @@ defined('ABSPATH') || exit;
             </tr>
         </table>
 
+        <!-- Sender Box -->
         <div class="sender-box">
             <div class="box-title">فرستنده: <?php echo esc_html($data['seller']['name']); ?></div>
             <div class="info-line">نشانی: <?php echo esc_html($data['seller']['address'] ?: 'دفتر مرکزی فروشگاه'); ?></div>
-            <div class="info-line">تلفن: <?php echo woo_factor_fa_digits($data['seller']['phone'] ?: '-'); ?> | وبسایت: <?php echo esc_html($data['seller']['website']); ?></div>
+            <div class="info-line">
+                تلفن / همراه فرستنده: <strong><?php echo woo_factor_fa_digits($data['seller']['phone'] ?: '-'); ?></strong>
+                <?php if (!empty($data['seller']['postal_code'])): ?>
+                    &nbsp;|&nbsp; کد پستی: <?php echo woo_factor_fa_digits($data['seller']['postal_code']); ?>
+                <?php endif; ?>
+            </div>
         </div>
 
+        <!-- Receiver Box -->
         <div class="receiver-box">
             <div class="box-title">گیرنده: <?php echo esc_html($data['buyer']['shipping_name']); ?></div>
             <div class="info-line" style="font-size: 13px; font-weight: bold; color: #0f172a;">نشانی کامل: <?php echo esc_html($data['buyer']['shipping_address'] ?: $data['buyer']['full_address']); ?></div>
             <div class="info-line" style="margin-top: 5px;">
-                کد پستی: <span class="postcode-tag"><?php echo woo_factor_fa_digits($data['buyer']['shipping_postcode'] ?: '-'); ?></span>
+                کد پستی ۱۰ رقمی: <span class="postcode-tag"><?php echo woo_factor_fa_digits($data['buyer']['shipping_postcode'] ?: '-'); ?></span>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                شماره همراه: <strong><?php echo woo_factor_fa_digits($data['buyer']['shipping_phone'] ?: '-'); ?></strong>
+                شماره همراه گیرنده: <strong><?php echo woo_factor_fa_digits($data['buyer']['shipping_phone'] ?: '-'); ?></strong>
             </div>
         </div>
 
+        <!-- Customer Note -->
+        <?php if (!empty($data['customer_note'])): ?>
+            <div style="border: 1px dashed #f59e0b; background: #fffbeb; border-radius: 4px; padding: 6px 10px; margin-bottom: 8px; font-size: 10.5px; color: #92400e;">
+                <strong>یادداشت خریدار:</strong> <?php echo esc_html($data['customer_note']); ?>
+            </div>
+        <?php endif; ?>
+
+        <!-- Packed Items -->
         <?php if (!empty($data['items'])): ?>
             <div style="border: 1px solid #e2e8f0; border-radius: 4px; padding: 6px 8px; margin-bottom: 8px; font-size: 10px; background: #fff;">
-                <strong>اقلام داخل مرسوله:</strong>
+                <strong>اقلام مرسوله:</strong>
                 <?php 
                 $item_summaries = [];
                 foreach ($data['items'] as $it) {

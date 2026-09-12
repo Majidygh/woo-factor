@@ -21,7 +21,7 @@ wp-content/uploads/
 
 # Archives and generated artifacts
 *.zip
-!woo-factor.zip
+!WooFactor.zip
 *.log
 
 # Environment and credentials

@@ -1,6 +1,6 @@
 <?php
 /**
- * Render Engine for Woo Factor Invoices
+ * Render Engine for WooFactor Invoices
  */
 defined('ABSPATH') || exit;
 
@@ -66,20 +66,20 @@ class Woo_Factor_Renderer {
 
         $classic_url = add_query_arg('template', 'classic', $current_url);
         $modern_url = add_query_arg('template', 'modern', $current_url);
-        $comm_url = add_query_arg('template', 'commercial', $current_url);
+        $thermal_url = add_query_arg('template', 'thermal', $current_url);
 
         $html = '<div class="no-print woo-factor-toolbar">'
               . '<div class="wf-tb-inner">'
               . '<div class="wf-tb-right">'
-              . '<button type="button" onclick="window.print();" class="wf-btn wf-btn-primary">🖨️ چاپ فاکتور (Print / PDF)</button>'
+              . '<button type="button" onclick="window.print();" class="wf-btn wf-btn-primary">🖨️ چاپ سریع فاکتور (Print)</button>'
               . '<span class="wf-sep"></span>'
               . '<span class="wf-lbl">قالب:</span>'
               . '<a href="' . esc_url($classic_url) . '" class="wf-btn ' . ($current_template === 'classic' ? 'wf-btn-active' : '') . '">رسمی دارایی</a>'
-              . '<a href="' . esc_url($modern_url) . '" class="wf-btn ' . ($current_template === 'modern' ? 'wf-btn-active' : '') . '">مدرن و مینیمال</a>'
-              . '<a href="' . esc_url($comm_url) . '" class="wf-btn ' . ($current_template === 'commercial' ? 'wf-btn-active' : '') . '">تجاری و لوکس</a>'
+              . '<a href="' . esc_url($modern_url) . '" class="wf-btn ' . ($current_template === 'modern' ? 'wf-btn-active' : '') . '">مدرن استاندارد</a>'
+              . '<a href="' . esc_url($thermal_url) . '" class="wf-btn ' . ($current_template === 'thermal' ? 'wf-btn-active' : '') . '">فیش‌پرینتر حرارتی</a>'
               . '</div>'
               . '<div class="wf-tb-left">'
-              . '<span class="wf-info">فاکتور شماره: <strong>' . woo_factor_fa_digits($data['invoice_number'] ?? $order_num) . '</strong></span>'
+              . '<span class="wf-info">فاکتور: <strong>' . woo_factor_fa_digits($data['invoice_number'] ?? $order_num) . '</strong></span>'
               . '</div>'
               . '</div>'
               . '</div>';
@@ -174,7 +174,8 @@ class Woo_Factor_Renderer {
      * Inject shared font/base styles right after <head> (or prepend if missing).
      */
     public static function inject_fonts($html) {
-        $style = '<style id="woo-factor-fonts">' . self::font_css() . '</style>';
+        $meta_noindex = '<meta name="robots" content="noindex, nofollow">';
+        $style = $meta_noindex . '<style id="woo-factor-fonts">' . self::font_css() . '</style>';
 
         if (stripos($html, '<head>') !== false) {
             return preg_replace('/<head>/i', '<head>' . $style, $html, 1);

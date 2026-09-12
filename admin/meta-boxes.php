@@ -44,7 +44,7 @@ function woo_factor_render_order_meta_box($post_or_order) {
             <div style="display: flex; gap: 4px;">
                 <a href="<?php echo esc_url($inv_url . '&template=classic'); ?>" target="_blank" class="button" style="flex: 1; text-align: center; font-size: 11px; padding: 0 4px;">رسمی</a>
                 <a href="<?php echo esc_url($inv_url . '&template=modern'); ?>" target="_blank" class="button" style="flex: 1; text-align: center; font-size: 11px; padding: 0 4px;">مدرن</a>
-                <a href="<?php echo esc_url($inv_url . '&template=commercial'); ?>" target="_blank" class="button" style="flex: 1; text-align: center; font-size: 11px; padding: 0 4px;">تجاری</a>
+                <a href="<?php echo esc_url($inv_url . '&template=thermal'); ?>" target="_blank" class="button" style="flex: 1; text-align: center; font-size: 11px; padding: 0 4px;">حرارتی</a>
             </div>
 
             <a href="<?php echo esc_url($label_url); ?>" target="_blank" class="button button-secondary" style="text-align: center; margin-top: 2px;">

@@ -47,10 +47,11 @@ assert_same('پنج', woo_factor_number_to_words(5), '5 must be پنج');
 assert_same('یک میلیون و پانصد هزار', woo_factor_number_to_words(1500000), '1,500,000 to Persian words');
 assert_same('۲۵,۰۰۰', woo_factor_number_format(25000), 'Persian number formatting');
 
-require_once dirname(__DIR__) . '/includes/qrcode.php';
-$qr = Woo_Factor_QRCode::get_svg('https://example.com/verify');
-if (empty($qr) || strpos($qr, '<svg') === false) {
-    fail_test('QR Code SVG generation failed');
+// QR code removed as per user requirements
+require_once dirname(__DIR__) . '/includes/sms.php';
+$gateways = Woo_Factor_SMS::get_gateways();
+if (!isset($gateways['ippanel']) || !isset($gateways['kavenegar'])) {
+    fail_test('SMS gateways registration failed');
 }
 
 require_once dirname(__DIR__) . '/includes/barcode.php';
