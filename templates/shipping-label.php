@@ -119,10 +119,23 @@ defined('ABSPATH') || exit;
             </div>
         </div>
 
+        <?php if (!empty($data['items'])): ?>
+            <div style="border: 1px solid #e2e8f0; border-radius: 4px; padding: 6px 8px; margin-bottom: 8px; font-size: 10px; background: #fff;">
+                <strong>اقلام داخل مرسوله:</strong>
+                <?php 
+                $item_summaries = [];
+                foreach ($data['items'] as $it) {
+                    $item_summaries[] = esc_html($it['title']) . ' (' . woo_factor_fa_digits($it['qty']) . ' عدد)';
+                }
+                echo implode(' ، ', $item_summaries);
+                ?>
+            </div>
+        <?php endif; ?>
+
         <table class="footer-table">
             <tr>
                 <td>روش ارسال: <strong><?php echo esc_html($data['totals']['shipping_method']); ?></strong></td>
-                <td style="text-align: left;">تاریخ ثبت: <strong><?php echo esc_html($data['jalali_date']); ?></strong></td>
+                <td style="text-align: left;">تاریخ ثبت: <strong><?php echo woo_factor_fa_digits($data['jalali_date']); ?></strong></td>
             </tr>
         </table>
     </div>

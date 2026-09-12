@@ -41,4 +41,22 @@ foreach ($base as $i => $ch) {
 }
 assert_same('#0F766E', woo_factor_color_shade('nonsense', 20, '#0F766E'), 'Shade of invalid color must fall back');
 
+require_once dirname(__DIR__) . '/includes/persian-numbers.php';
+assert_same('صفر', woo_factor_number_to_words(0), '0 must be صفر');
+assert_same('پنج', woo_factor_number_to_words(5), '5 must be پنج');
+assert_same('یک میلیون و پانصد هزار', woo_factor_number_to_words(1500000), '1,500,000 to Persian words');
+assert_same('۲۵,۰۰۰', woo_factor_number_format(25000), 'Persian number formatting');
+
+require_once dirname(__DIR__) . '/includes/qrcode.php';
+$qr = Woo_Factor_QRCode::get_svg('https://example.com/verify');
+if (empty($qr) || strpos($qr, '<svg') === false) {
+    fail_test('QR Code SVG generation failed');
+}
+
+require_once dirname(__DIR__) . '/includes/barcode.php';
+$bc = Woo_Factor_Barcode_128::get_svg('12345');
+if (empty($bc) || strpos($bc, '<svg') === false) {
+    fail_test('Barcode 128 SVG generation failed');
+}
+
 fwrite(STDOUT, "PASS: Woo Factor helper regressions\n");

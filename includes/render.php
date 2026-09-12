@@ -23,9 +23,7 @@ class Woo_Factor_Renderer {
     }
 
     /**
-     * Build the shared font/base CSS. Vazirmatn TTF files are inlined as
-     * data URIs so rendering never depends on network, CDN, or URL path
-     * resolution — works in browsers, print, and PDF/screenshot engines.
+     * Build font CSS using local plugin assets with WOFF2 and TTF formats.
      */
     public static function font_css() {
         static $css = null;
@@ -34,15 +32,20 @@ class Woo_Factor_Renderer {
         }
 
         $css = '';
+        $base_url = WOO_FACTOR_URL . 'assets/fonts/';
 
         foreach (self::font_faces() as [$weight, $script, $range]) {
-            $path = WOO_FACTOR_DIR . "assets/fonts/vazirmatn-{$script}-{$weight}-normal.ttf";
-            if (!is_readable($path)) {
-                continue;
-            }
-            $uri = 'data:font/ttf;base64,' . base64_encode((string) file_get_contents($path));
-            $css .= "@font-face { font-family: 'Vazirmatn'; font-style: normal; font-weight: {$weight}; "
-                  . "src: url('{$uri}') format('truetype'); unicode-range: {$range}; }\n";
+            $woff2_url = esc_url($base_url . "vazirmatn-{$script}-{$weight}-normal.woff2");
+            $ttf_url = esc_url($base_url . "vazirmatn-{$script}-{$weight}-normal.ttf");
+
+            $css .= "@font-face {\n"
+                  . "  font-family: 'Vazirmatn';\n"
+                  . "  font-style: normal;\n"
+                  . "  font-weight: {$weight};\n"
+                  . "  font-display: swap;\n"
+                  . "  src: url('{$woff2_url}') format('woff2'), url('{$ttf_url}') format('truetype');\n"
+                  . "  unicode-range: {$range};\n"
+                  . "}\n";
         }
 
         $base = WOO_FACTOR_DIR . self::FONT_CSS;
@@ -51,6 +54,120 @@ class Woo_Factor_Renderer {
         }
 
         return $css;
+    }
+
+    /**
+     * Build floating action toolbar for web view.
+     */
+    public static function get_toolbar_html($data, $current_template = 'classic') {
+        $order_id = $data['order_id'] ?? 0;
+        $order_num = $data['order_number'] ?? '';
+        $current_url = remove_query_arg(['template']);
+
+        $classic_url = add_query_arg('template', 'classic', $current_url);
+        $modern_url = add_query_arg('template', 'modern', $current_url);
+        $comm_url = add_query_arg('template', 'commercial', $current_url);
+
+        $html = '<div class="no-print woo-factor-toolbar">'
+              . '<div class="wf-tb-inner">'
+              . '<div class="wf-tb-right">'
+              . '<button type="button" onclick="window.print();" class="wf-btn wf-btn-primary">🖨️ چاپ فاکتور (Print / PDF)</button>'
+              . '<span class="wf-sep"></span>'
+              . '<span class="wf-lbl">قالب:</span>'
+              . '<a href="' . esc_url($classic_url) . '" class="wf-btn ' . ($current_template === 'classic' ? 'wf-btn-active' : '') . '">رسمی دارایی</a>'
+              . '<a href="' . esc_url($modern_url) . '" class="wf-btn ' . ($current_template === 'modern' ? 'wf-btn-active' : '') . '">مدرن و مینیمال</a>'
+              . '<a href="' . esc_url($comm_url) . '" class="wf-btn ' . ($current_template === 'commercial' ? 'wf-btn-active' : '') . '">تجاری و لوکس</a>'
+              . '</div>'
+              . '<div class="wf-tb-left">'
+              . '<span class="wf-info">فاکتور شماره: <strong>' . woo_factor_fa_digits($data['invoice_number'] ?? $order_num) . '</strong></span>'
+              . '</div>'
+              . '</div>'
+              . '</div>';
+
+        $html .= '<style>
+            .woo-factor-toolbar {
+                position: sticky;
+                top: 0;
+                left: 0;
+                right: 0;
+                background: #0f172a;
+                color: #ffffff;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                z-index: 99999;
+                padding: 8px 16px;
+                font-family: "Vazirmatn", Tahoma, sans-serif;
+                font-size: 12px;
+                direction: rtl;
+                margin-bottom: 12px;
+            }
+            .wf-tb-inner {
+                max-width: 860px;
+                margin: 0 auto;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            .wf-tb-right {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                flex-wrap: wrap;
+            }
+            .wf-btn {
+                display: inline-flex;
+                align-items: center;
+                padding: 6px 12px;
+                border-radius: 6px;
+                background: #1e293b;
+                color: #e2e8f0;
+                text-decoration: none;
+                font-weight: bold;
+                font-size: 11px;
+                border: 1px solid #334155;
+                cursor: pointer;
+                transition: all 0.2s;
+            }
+            .wf-btn:hover {
+                background: #334155;
+                color: #ffffff;
+            }
+            .wf-btn-primary {
+                background: #0284c7;
+                color: #ffffff;
+                border-color: #0284c7;
+            }
+            .wf-btn-primary:hover {
+                background: #0369a1;
+            }
+            .wf-btn-active {
+                background: #0f766e;
+                color: #ffffff;
+                border-color: #0f766e;
+            }
+            .wf-sep {
+                width: 1px;
+                height: 20px;
+                background: #334155;
+                margin: 0 4px;
+            }
+            .wf-lbl {
+                color: #94a3b8;
+                font-size: 11px;
+            }
+            .wf-info {
+                color: #cbd5e1;
+                font-size: 11.5px;
+            }
+            @media print {
+                .woo-factor-toolbar, .no-print {
+                    display: none !important;
+                }
+            }
+        </style>';
+
+        return $html;
     }
 
     /**
@@ -82,6 +199,14 @@ class Woo_Factor_Renderer {
         ob_start();
         include $template_file;
         $html = ob_get_clean();
+
+        // Inject toolbar right after <body>
+        $toolbar = self::get_toolbar_html($data, $template_key);
+        if (stripos($html, '<body') !== false) {
+            $html = preg_replace('/(<body[^>]*>)/i', '$1' . $toolbar, $html, 1);
+        } else {
+            $html = $toolbar . $html;
+        }
 
         return self::inject_fonts($html);
     }

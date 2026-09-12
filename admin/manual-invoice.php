@@ -217,34 +217,53 @@ add_action('wp_ajax_woo_factor_generate_manual_invoice', function () {
     $grand    = woo_factor_calculate_manual_grand_total($subtotal, $discount, $shipping, $tax);
 
     $totals = [
-        'subtotal'        => $subtotal,
-        'discount'        => $discount,
-        'shipping'        => $shipping,
-        'shipping_method' => $shipping > 0 ? 'پیک / پست' : 'تحویل حضوری',
-        'tax'             => $tax,
-        'grand_total'     => $grand,
-        'currency'        => $currency,
-        'payment_method'  => 'نقدی / تسویه دستی',
+        'subtotal'          => $subtotal,
+        'discount'          => $discount,
+        'shipping'          => $shipping,
+        'shipping_method'   => $shipping > 0 ? 'پیک / پست' : 'تحویل حضوری',
+        'tax'               => $tax,
+        'grand_total'       => $grand,
+        'grand_total_words' => woo_factor_number_to_words($grand),
+        'currency'          => $currency,
+        'payment_method'    => 'نقدی / تسویه دستی',
+        'transaction_id'    => '',
     ];
 
+    $seller['stamp_url'] = woo_factor_get_stamp_url();
+    $seller['economic_code'] = $opts['shop_economic_code'] ?? '';
+    $seller['registration_no'] = $opts['shop_registration_no'] ?? '';
+    $seller['postal_code'] = $opts['shop_postal_code'] ?? '';
+
     $data = [
-        'type'            => 'manual',
-        'order_id'        => 0,
-        'order_number'    => $inv_num,
-        'invoice_number'  => $inv_num,
-        'jalali_date'     => woo_factor_jdate(current_time('timestamp'), false),
-        'jalali_time'     => woo_factor_jdate(current_time('timestamp'), true),
-        'status'          => 'completed',
-        'status_name'     => 'تسویه شده',
-        'seller'          => $seller,
-        'buyer'           => $buyer,
-        'items'           => $items,
-        'totals'          => $totals,
-        'barcode_svg'     => Woo_Factor_Barcode_128::get_svg($inv_num, 40, 1.5),
-        'customer_note'   => sanitize_textarea_field($_POST['note'] ?? ''),
-        'footer_note'     => $opts['footer_note'] ?? 'از خرید شما سپاسگزاریم.',
-        'signature_stamp' => $opts['signature_stamp'] ?? 'مهر و امضای فروشگاه',
-        'color'           => woo_factor_normalize_color($opts['color'] ?? ''),
+        'type'                 => 'manual',
+        'order_id'             => 0,
+        'order_number'         => $inv_num,
+        'invoice_number'       => $inv_num,
+        'jalali_date'          => woo_factor_jdate(current_time('timestamp'), false),
+        'jalali_time'          => woo_factor_jdate(current_time('timestamp'), true),
+        'status'               => 'completed',
+        'status_name'          => 'تسویه شده',
+        'seller'               => $seller,
+        'buyer'                => $buyer,
+        'items'                => $items,
+        'totals'               => $totals,
+        'barcode_svg'          => Woo_Factor_Barcode_128::get_svg($inv_num, 40, 1.5),
+        'qrcode_svg'           => Woo_Factor_QRCode::get_svg($inv_num, 90, '#0f172a'),
+        'customer_note'        => sanitize_textarea_field($_POST['note'] ?? ''),
+        'footer_note'          => $opts['footer_note'] ?? 'از خرید شما سپاسگزاریم.',
+        'invoice_terms'        => $opts['invoice_terms'] ?? '',
+        'signature_stamp'      => $opts['signature_stamp'] ?? 'مهر و امضای فروشگاه',
+        'stamp_url'            => $seller['stamp_url'],
+        'color'                => woo_factor_normalize_color($opts['color'] ?? ''),
+        'watermark_text'       => 'پرداخت شد',
+        'show_barcode'         => ($opts['show_barcode'] ?? 'yes') === 'yes',
+        'show_qrcode'          => ($opts['show_qrcode'] ?? 'yes') === 'yes',
+        'show_product_image'   => false,
+        'show_sku'             => false,
+        'show_tax_column'      => ($opts['show_tax_column'] ?? 'yes') === 'yes',
+        'show_discount_column' => ($opts['show_discount_column'] ?? 'yes') === 'yes',
+        'show_watermark'       => ($opts['show_watermark'] ?? 'yes') === 'yes',
+        'show_signature'       => ($opts['show_signature'] ?? 'yes') === 'yes',
     ];
 
     echo Woo_Factor_Renderer::render_html($data, $template);

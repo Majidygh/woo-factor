@@ -1,6 +1,6 @@
 <?php
 /**
- * WooCommerce Hooks Integration
+ * WooCommerce Hooks Integration & Bulk Actions
  */
 defined('ABSPATH') || exit;
 
@@ -33,7 +33,98 @@ add_action('admin_head', function () {
     </style>';
 });
 
-// 2. AJAX Handlers to view invoice & shipping label
+// 2. Register Bulk Actions for Orders (Classic & HPOS)
+add_filter('bulk_actions-edit-shop_order', 'woo_factor_register_bulk_actions');
+add_filter('bulk_actions-woocommerce_page_wc-orders', 'woo_factor_register_bulk_actions');
+
+function woo_factor_register_bulk_actions($actions) {
+    $actions['woo_factor_bulk_invoices'] = __('🖨️ چاپ گروهی فاکتورها (ووفاکتور)', 'woo-factor');
+    $actions['woo_factor_bulk_labels'] = __('📮 چاپ گروهی برچسب‌های پستی (ووفاکتور)', 'woo-factor');
+    return $actions;
+}
+
+add_filter('handle_bulk_actions-edit-shop_order', 'woo_factor_handle_bulk_actions', 10, 3);
+add_filter('handle_bulk_actions-woocommerce_page_wc-orders', 'woo_factor_handle_bulk_actions', 10, 3);
+
+function woo_factor_handle_bulk_actions($redirect_to, $action, $order_ids) {
+    if (!current_user_can('manage_woocommerce')) {
+        return $redirect_to;
+    }
+
+    if ($action === 'woo_factor_bulk_invoices' && !empty($order_ids)) {
+        $ids = implode(',', array_map('absint', $order_ids));
+        $url = wp_nonce_url(admin_url('admin-ajax.php?action=woo_factor_bulk_invoices&order_ids=' . $ids), 'woo_factor_bulk_print');
+        wp_redirect($url);
+        exit;
+    }
+
+    if ($action === 'woo_factor_bulk_labels' && !empty($order_ids)) {
+        $ids = implode(',', array_map('absint', $order_ids));
+        $url = wp_nonce_url(admin_url('admin-ajax.php?action=woo_factor_bulk_labels&order_ids=' . $ids), 'woo_factor_bulk_print');
+        wp_redirect($url);
+        exit;
+    }
+
+    return $redirect_to;
+}
+
+// 3. Bulk Printing Handlers
+add_action('wp_ajax_woo_factor_bulk_invoices', function () {
+    if (!current_user_can('manage_woocommerce')) {
+        wp_die('عدم دسترسی.');
+    }
+    check_admin_referer('woo_factor_bulk_print');
+
+    $ids_str = isset($_GET['order_ids']) ? sanitize_text_field(wp_unslash($_GET['order_ids'])) : '';
+    $ids = array_filter(array_map('absint', explode(',', $ids_str)));
+
+    if (empty($ids)) {
+        wp_die('هیچ سفارشی انتخاب نشده است.');
+    }
+
+    $opts = woo_factor_options();
+    $template = $opts['template'] ?? 'classic';
+
+    $output = '';
+    foreach ($ids as $order_id) {
+        $data = Woo_Factor_Invoice_Builder::build_from_order($order_id);
+        if ($data) {
+            $output .= '<div class="bulk-page-item">' . Woo_Factor_Renderer::render_html($data, $template) . '</div>';
+            $output .= '<div class="page-break" style="page-break-after: always; height: 0; margin: 0; padding: 0;"></div>';
+        }
+    }
+
+    echo $output;
+    exit;
+});
+
+add_action('wp_ajax_woo_factor_bulk_labels', function () {
+    if (!current_user_can('manage_woocommerce')) {
+        wp_die('عدم دسترسی.');
+    }
+    check_admin_referer('woo_factor_bulk_print');
+
+    $ids_str = isset($_GET['order_ids']) ? sanitize_text_field(wp_unslash($_GET['order_ids'])) : '';
+    $ids = array_filter(array_map('absint', explode(',', $ids_str)));
+
+    if (empty($ids)) {
+        wp_die('هیچ سفارشی انتخاب نشده است.');
+    }
+
+    $output = '';
+    foreach ($ids as $order_id) {
+        $data = Woo_Factor_Invoice_Builder::build_from_order($order_id);
+        if ($data) {
+            $output .= '<div class="bulk-label-item">' . Woo_Factor_Renderer::render_shipping_label($data) . '</div>';
+            $output .= '<div class="page-break" style="page-break-after: always; height: 0; margin: 0; padding: 0;"></div>';
+        }
+    }
+
+    echo $output;
+    exit;
+});
+
+// 4. AJAX Handlers to view single invoice & shipping label
 add_action('wp_ajax_woo_factor_view_invoice', 'woo_factor_handle_view_invoice');
 add_action('wp_ajax_nopriv_woo_factor_view_invoice', 'woo_factor_handle_view_invoice');
 
@@ -48,9 +139,6 @@ function woo_factor_handle_view_invoice() {
         wp_die('سفارش یافت نشد.');
     }
 
-    // Permission: admins/managers may always view. Everyone else must prove
-    // ownership — a logged-in account match OR the unguessable order key.
-    // A bare nonce is NOT enough: those links get forwarded and leak PII.
     $current_user_id = get_current_user_id();
     $is_admin = current_user_can('manage_woocommerce');
     $is_owner = $current_user_id && ($order->get_customer_id() === $current_user_id);
@@ -83,7 +171,7 @@ add_action('wp_ajax_woo_factor_view_label', function () {
     exit;
 });
 
-// 3. Customer My Account Orders Page - Add Download Invoice Button
+// 5. Customer My Account Orders Page - Add Download Invoice Button
 add_filter('woocommerce_my_account_my_orders_actions', function ($actions, $order) {
     $opts = woo_factor_options();
     if (($opts['myaccount_page'] ?? 'yes') === 'yes') {
@@ -98,7 +186,7 @@ add_filter('woocommerce_my_account_my_orders_actions', function ($actions, $orde
     return $actions;
 }, 10, 2);
 
-// 4. Attach invoice button/link in WooCommerce Customer Emails
+// 6. Attach invoice button/link in WooCommerce Customer Emails
 add_action('woocommerce_email_after_order_table', function ($order, $sent_to_admin, $plain_text, $email) {
     $opts = woo_factor_options();
     if (($opts['attach_woocommerce'] ?? 'yes') !== 'yes' || $plain_text) {
@@ -111,11 +199,11 @@ add_action('woocommerce_email_after_order_table', function ($order, $sent_to_adm
     }
 
     echo '<div style="margin: 20px 0; text-align: center;">';
-    echo '<a href="' . esc_url($url) . '" target="_blank" style="background-color: #0f766e; color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">' . esc_html__('مشاهده و چاپ فاکتور خرید آنلاین', 'woo-factor') . '</a>';
+    echo '<a href="' . esc_url($url) . '" target="_blank" style="background-color: #0f766e; color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">' . esc_html__('مشاهده و چاپ فاکتور خرید آنلاین', 'woo-factor') . '</a>';
     echo '</div>';
 }, 10, 4);
 
-// 5. Add National ID field to WooCommerce Checkout if enabled
+// 7. Add National ID field to WooCommerce Checkout if enabled
 add_filter('woocommerce_billing_fields', function ($fields) {
     $fields['billing_national_code'] = [
         'type'        => 'text',
@@ -129,8 +217,7 @@ add_filter('woocommerce_billing_fields', function ($fields) {
     return $fields;
 });
 
-// 6. Persist checkout national / economic codes onto the order so the
-// invoice builder can actually print them (previously display-only).
+// 8. Persist checkout national / economic codes onto the order
 add_action('woocommerce_checkout_create_order', function ($order, $data) {
     if (isset($_POST['billing_national_code'])) {
         $order->update_meta_data('_billing_national_code', sanitize_text_field(wp_unslash($_POST['billing_national_code'])));

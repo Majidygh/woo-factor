@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 780" width="600" height="780">
+  <defs>
+    <filter id="cardShadow" x="-5%" y="-5%" width="110%" height="115%">
+      <feDropShadow dx="0" dy="6" stdDeviation="12" flood-color="#0f172a" flood-opacity="0.08" />
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="600" height="780" fill="#f1f5f9" />
+
+  <!-- Invoice Sheet -->
+  <g transform="translate(30, 25)" filter="url(#cardShadow)">
+    <rect width="540" height="730" rx="4" fill="#ffffff" stroke="#334155" stroke-width="2" />
+
+    <!-- Watermark -->
+    <g transform="translate(270, 360) rotate(-28)">
+      <rect x="-140" y="-30" width="280" height="60" rx="8" fill="none" stroke="#0f172a" stroke-width="4" stroke-dasharray="8,6" opacity="0.08" />
+      <text x="0" y="10" fill="#0f172a" font-family="'Vazirmatn', Tahoma, sans-serif" font-size="34" font-weight="900" text-anchor="middle" opacity="0.08">پرداخت شد</text>
+    </g>
+
+    <!-- Header Table -->
+    <rect x="20" y="20" width="100" height="45" rx="4" fill="#f8fafc" stroke="#cbd5e1" />
+    <text x="70" y="46" fill="#0f766e" font-family="Tahoma, sans-serif" font-size="12" font-weight="bold" text-anchor="middle">لوگوی فروشگاه</text>
+
+    <text x="270" y="40" fill="#0f172a" font-family="Tahoma, sans-serif" font-size="15" font-weight="900" text-anchor="middle">صورتحساب رسمی فروش کالا و خدمات</text>
+    <text x="270" y="58" fill="#0f766e" font-family="Tahoma, sans-serif" font-size="11" font-weight="bold" text-anchor="middle">(ماده ۱۹ قانون مالیات بر ارزش افزوده)</text>
+
+    <rect x="390" y="20" width="130" height="52" rx="4" fill="#f8fafc" stroke="#cbd5e1" />
+    <text x="510" y="36" fill="#1e293b" font-family="Tahoma, sans-serif" font-size="9.5" text-anchor="end">شماره فاکتور: ۱۴۰۲-۸۸۴۲</text>
+    <text x="510" y="50" fill="#1e293b" font-family="Tahoma, sans-serif" font-size="9.5" text-anchor="end">تاریخ صدور: ۱۴۰۲/۱۲/۱۵</text>
+    <text x="510" y="64" fill="#1e293b" font-family="Tahoma, sans-serif" font-size="9.5" text-anchor="end">وضعیت: تکمیل شده</text>
+
+    <line x1="20" y1="82" x2="520" y2="82" stroke="#334155" stroke-width="2" />
+
+    <!-- Seller Section -->
+    <rect x="20" y="92" width="500" height="20" rx="2" fill="#334155" />
+    <text x="510" y="106" fill="#ffffff" font-family="Tahoma, sans-serif" font-size="10" font-weight="bold" text-anchor="end">الف) مشخصات فروشنده</text>
+
+    <rect x="20" y="115" width="500" height="60" fill="#ffffff" stroke="#cbd5e1" />
+    <line x1="20" y1="135" x2="520" y2="135" stroke="#cbd5e1" />
+    <line x1="20" y1="155" x2="520" y2="155" stroke="#cbd5e1" />
+    <text x="510" y="129" fill="#334155" font-family="Tahoma, sans-serif" font-size="9.5" text-anchor="end">نام شرکت: شرکت تجارت الکترونیک نمونه</text>
+    <text x="220" y="129" fill="#334155" font-family="Tahoma, sans-serif" font-size="9.5" text-anchor="end">کد اقتصادی: ۴۱۱۴۵۸۹۲۳۱</text>
+    <text x="510" y="149" fill="#334155" font-family="Tahoma, sans-serif" font-size="9.5" text-anchor="end">شناسه ملی: ۱۰۱۰۳۴۵۶۷۸۹</text>
+    <text x="220" y="149" fill="#334155" font-family="Tahoma, sans-serif" font-size="9.5" text-anchor="end">شماره ثبت: ۳۶۵۸۹</text>
+    <text x="510" y="169" fill="#334155" font-family="Tahoma, sans-serif" font-size="9.5" text-anchor="end">نشانی: تهران، خیابان ولیعصر، برج سپهر، واحد ۱۲</text>
+
+    <!-- Buyer Section -->
+    <rect x="20" y="184" width="500" height="20" rx="2" fill="#334155" />
+    <text x="510" y="198" fill="#ffffff" font-family="Tahoma, sans-serif" font-size="10" font-weight="bold" text-anchor="end">ب) مشخصات خریدار</text>
+
+    <rect x="20" y="207" width="500" height="60" fill="#ffffff" stroke="#cbd5e1" />
+    <line x1="20" y1="227" x2="520" y2="227" stroke="#cbd5e1" />
+    <line x1="20" y1="247" x2="520" y2="247" stroke="#cbd5e1" />
+    <text x="510" y="221" fill="#334155" font-family="Tahoma, sans-serif" font-size="9.5" text-anchor="end">نام خریدار: علی رضایی</text>
+    <text x="220" y="221" fill="#334155" font-family="Tahoma, sans-serif" font-size="9.5" text-anchor="end">کد ملی: ۰۰۱۲۳۴۵۶۷۸</text>
+    <text x="510" y="241" fill="#334155" font-family="Tahoma, sans-serif" font-size="9.5" text-anchor="end">تلفن: ۰۹۱۲۳۴۵۶۷۸۹</text>
+    <text x="220" y="241" fill="#334155" font-family="Tahoma, sans-serif" font-size="9.5" text-anchor="end">کد پستی: ۱۹۸۵۷۱۲۳۴۵</text>
+    <text x="510" y="261" fill="#334155" font-family="Tahoma, sans-serif" font-size="9.5" text-anchor="end">نشانی تحویل: اصفهان، چهارباغ عباسی، پلاک ۴</text>
+
+    <!-- Items Section -->
+    <rect x="20" y="276" width="500" height="20" rx="2" fill="#334155" />
+    <text x="510" y="290" fill="#ffffff" font-family="Tahoma, sans-serif" font-size="10" font-weight="bold" text-anchor="end">ج) مشخصات کالا یا خدمات مورد معامله</text>
+
+    <rect x="20" y="299" width="500" height="150" fill="#ffffff" stroke="#94a3b8" />
+    <rect x="20" y="299" width="500" height="22" fill="#e2e8f0" />
+    <text x="505" y="314" fill="#0f172a" font-family="Tahoma, sans-serif" font-size="9.5" font-weight="bold" text-anchor="end">ردیف</text>
+    <text x="390" y="314" fill="#0f172a" font-family="Tahoma, sans-serif" font-size="9.5" font-weight="bold" text-anchor="end">شرح کالا یا خدمت</text>
+    <text x="240" y="314" fill="#0f172a" font-family="Tahoma, sans-serif" font-size="9.5" font-weight="bold" text-anchor="end">تعداد</text>
+    <text x="180" y="314" fill="#0f172a" font-family="Tahoma, sans-serif" font-size="9.5" font-weight="bold" text-anchor="end">مبلغ واحد</text>
+    <text x="110" y="314" fill="#0f172a" font-family="Tahoma, sans-serif" font-size="9.5" font-weight="bold" text-anchor="end">مالیات</text>
+    <text x="40" y="314" fill="#0f172a" font-family="Tahoma, sans-serif" font-size="9.5" font-weight="bold" text-anchor="middle">جمع کل</text>
+
+    <!-- Row 1 -->
+    <line x1="20" y1="345" x2="520" y2="345" stroke="#e2e8f0" />
+    <text x="505" y="337" fill="#0f172a" font-family="Tahoma, sans-serif" font-size="9.5" text-anchor="end">۱</text>
+    <text x="440" y="337" fill="#0f172a" font-family="Tahoma, sans-serif" font-size="9.5" text-anchor="end">گوشی موبایل هوشمند مدل Pro 5G</text>
+    <text x="235" y="337" fill="#0f172a" font-family="Tahoma, sans-serif" font-size="9.5" text-anchor="end">۱</text>
+    <text x="195" y="337" fill="#0f172a" font-family="Tahoma, sans-serif" font-size="9.5" text-anchor="end">۲۴,۵۰۰,۰۰۰</text>
+    <text x="120" y="337" fill="#0f172a" font-family="Tahoma, sans-serif" font-size="9.5" text-anchor="end">۲,۲۵۰,۰۰۰</text>
+    <text x="65" y="337" fill="#0f172a" font-family="Tahoma, sans-serif" font-size="9.5" font-weight="bold" text-anchor="end">۲۶,۷۵۰,۰۰۰</text>
+
+    <!-- Row 2 -->
+    <line x1="20" y1="375" x2="520" y2="375" stroke="#e2e8f0" />
+    <text x="505" y="367" fill="#0f172a" font-family="Tahoma, sans-serif" font-size="9.5" text-anchor="end">۲</text>
+    <text x="440" y="367" fill="#0f172a" font-family="Tahoma, sans-serif" font-size="9.5" text-anchor="end">قاب محافظ سیلیکونی ضد ضربه</text>
+    <text x="235" y="367" fill="#0f172a" font-family="Tahoma, sans-serif" font-size="9.5" text-anchor="end">۲</text>
+    <text x="195" y="367" fill="#0f172a" font-family="Tahoma, sans-serif" font-size="9.5" text-anchor="end">۲۵۰,۰۰۰</text>
+    <text x="120" y="367" fill="#0f172a" font-family="Tahoma, sans-serif" font-size="9.5" text-anchor="end">۴۵,۰۰۰</text>
+    <text x="65" y="367" fill="#0f172a" font-family="Tahoma, sans-serif" font-size="9.5" font-weight="bold" text-anchor="end">۵۴۵,۰۰۰</text>
+
+    <!-- Totals Table -->
+    <rect x="20" y="460" width="500" height="70" fill="#ffffff" stroke="#94a3b8" />
+    <rect x="20" y="495" width="500" height="35" fill="#f0fdf4" />
+    <text x="510" y="482" fill="#334155" font-family="Tahoma, sans-serif" font-size="10" font-weight="bold" text-anchor="end">جمع کل اقلام: ۲۵,۰۰۰,۰۰۰ تومان</text>
+    <text x="250" y="482" fill="#334155" font-family="Tahoma, sans-serif" font-size="10" font-weight="bold" text-anchor="end">تخفیف: ۵۰۰,۰۰۰ تومان</text>
+    <text x="510" y="518" fill="#0f766e" font-family="Tahoma, sans-serif" font-size="12" font-weight="900" text-anchor="end">مبلغ کل نهایی و قابل پرداخت: ۲۷,۲۹۵,۰۰۰ تومان</text>
+    <text x="180" y="518" fill="#475569" font-family="Tahoma, sans-serif" font-size="9.5" text-anchor="end">به حروف: بیست و هفت میلیون و دویست و نود و پنج هزار تومان</text>
+
+    <!-- Signatures & Verification -->
+    <g transform="translate(20, 545)">
+      <!-- Seller stamp -->
+      <rect x="0" y="0" width="150" height="90" rx="4" fill="#ffffff" stroke="#94a3b8" stroke-dasharray="3,3" />
+      <text x="75" y="20" fill="#475569" font-family="Tahoma, sans-serif" font-size="9.5" font-weight="bold" text-anchor="middle">مهر و امضای فروشگاه</text>
+      <circle cx="75" cy="55" r="24" fill="none" stroke="#0f766e" stroke-width="2" />
+      <text x="75" y="59" fill="#0f766e" font-family="Tahoma, sans-serif" font-size="8" font-weight="bold" text-anchor="middle">امضا و تأیید شد</text>
+
+      <!-- Buyer signature -->
+      <rect x="175" y="0" width="150" height="90" rx="4" fill="#ffffff" stroke="#94a3b8" stroke-dasharray="3,3" />
+      <text x="250" y="20" fill="#475569" font-family="Tahoma, sans-serif" font-size="9.5" font-weight="bold" text-anchor="middle">امضای خریدار / تحویل‌گیرنده</text>
+      <text x="250" y="60" fill="#94a3b8" font-family="Tahoma, sans-serif" font-size="8.5" text-anchor="middle">کالا سالم تحویل شد</text>
+
+      <!-- QR & Barcode -->
+      <rect x="350" y="0" width="150" height="90" rx="4" fill="#f8fafc" stroke="#cbd5e1" />
+      <rect x="405" y="15" width="40" height="40" fill="#1e293b" />
+      <text x="425" y="72" fill="#64748b" font-family="Tahoma, sans-serif" font-size="8.5" text-anchor="middle">اسکن اصالت فاکتور</text>
+    </g>
+
+    <!-- Footer -->
+    <text x="270" y="670" fill="#64748b" font-family="Tahoma, sans-serif" font-size="9" text-anchor="middle">از خرید و اعتماد شما سپاسگزاریم • سامانه رسمی ووفاکتور</text>
+  </g>
+</svg>

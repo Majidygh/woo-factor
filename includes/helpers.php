@@ -128,6 +128,18 @@ function woo_factor_get_logo_url() {
     return '';
 }
 
+function woo_factor_get_stamp_url() {
+    $opts = woo_factor_options();
+    if (!empty($opts['stamp_image_id'])) {
+        $src = wp_get_attachment_image_src($opts['stamp_image_id'], 'full');
+        if ($src) return $src[0];
+    }
+    if (!empty($opts['stamp_image_url'])) {
+        return $opts['stamp_image_url'];
+    }
+    return '';
+}
+
 /**
  * Sanitize callback for the woo_factor_options setting (registered in admin/settings.php).
  * Keeps known keys only; each value sanitized by its type. Unknown keys dropped.
@@ -144,10 +156,12 @@ function woo_factor_sanitize_options($input) {
         $val = $input[$key];
         if (is_bool($default) || in_array($val, ['1', '0', 1, 0, true, false], true) && in_array($key, ['require_login', 'attach_to_emails', 'show_in_myaccount'], true)) {
             $clean[$key] = (bool) $val;
-        } elseif ($key === 'footer_note' || $key === 'shop_address') {
+        } elseif (in_array($key, ['footer_note', 'shop_address', 'invoice_terms'], true)) {
             $clean[$key] = sanitize_textarea_field($val);
         } elseif ($key === 'theme_color' || $key === 'color') {
             $clean[$key] = woo_factor_normalize_color($val);
+        } elseif (in_array($key, ['logo_id', 'stamp_image_id'], true)) {
+            $clean[$key] = absint($val);
         } else {
             $clean[$key] = sanitize_text_field($val);
         }

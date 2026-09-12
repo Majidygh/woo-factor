@@ -12,7 +12,7 @@ add_action('add_meta_boxes', function () {
 
     add_meta_box(
         'woo_factor_order_invoice_box',
-        __('🧾 ووفاکتور', 'woo-factor'),
+        __('🧾 ووفاکتور | صدور و چاپ فاکتور', 'woo-factor'),
         'woo_factor_render_order_meta_box',
         $screen,
         'side',
@@ -27,27 +27,35 @@ function woo_factor_render_order_meta_box($post_or_order) {
     $order_id = $order->get_id();
     $inv_url = wp_nonce_url(admin_url('admin-ajax.php?action=woo_factor_view_invoice&order_id=' . $order_id), 'woo_factor_view_' . $order_id);
     $label_url = wp_nonce_url(admin_url('admin-ajax.php?action=woo_factor_view_label&order_id=' . $order_id), 'woo_factor_label_' . $order_id);
+    $customer_invoice_url = woo_factor_invoice_url($order);
     $custom_inv_num = $order->get_meta('_woo_factor_invoice_number') ?: $order->get_order_number();
     ?>
     <div style="direction: rtl; text-align: right;">
-        <p style="margin-bottom: 8px;">
-            <strong>شماره فاکتور:</strong> <?php echo woo_factor_fa_digits($custom_inv_num); ?>
-        </p>
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 8px 10px; margin-bottom: 10px; font-size: 12px;">
+            <div><strong>شماره فاکتور:</strong> <?php echo woo_factor_fa_digits($custom_inv_num); ?></div>
+            <div style="margin-top: 4px; color: #64748b; font-size: 11px;">تاریخ: <?php echo woo_factor_fa_digits(woo_factor_jdate($order->get_date_created() ? $order->get_date_created()->getTimestamp() : current_time('timestamp'), false)); ?></div>
+        </div>
 
-        <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 12px;">
-            <a href="<?php echo esc_url($inv_url); ?>" target="_blank" class="button button-primary" style="text-align: center; background: #0f766e; border-color: #0f766e;">
-                🖨️ چاپ فاکتور (قالب پیش‌فرض)
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+            <a href="<?php echo esc_url($inv_url); ?>" target="_blank" class="button button-primary" style="text-align: center; background: #0f766e; border-color: #0f766e; height: 32px; line-height: 30px;">
+                🖨️ مشاهده و چاپ فاکتور
             </a>
 
             <div style="display: flex; gap: 4px;">
-                <a href="<?php echo esc_url($inv_url . '&template=classic'); ?>" target="_blank" class="button" style="flex: 1; text-align: center; font-size: 11px;">قالب رسمی</a>
-                <a href="<?php echo esc_url($inv_url . '&template=modern'); ?>" target="_blank" class="button" style="flex: 1; text-align: center; font-size: 11px;">قالب مدرن</a>
-                <a href="<?php echo esc_url($inv_url . '&template=commercial'); ?>" target="_blank" class="button" style="flex: 1; text-align: center; font-size: 11px;">قالب تجاری</a>
+                <a href="<?php echo esc_url($inv_url . '&template=classic'); ?>" target="_blank" class="button" style="flex: 1; text-align: center; font-size: 11px; padding: 0 4px;">رسمی</a>
+                <a href="<?php echo esc_url($inv_url . '&template=modern'); ?>" target="_blank" class="button" style="flex: 1; text-align: center; font-size: 11px; padding: 0 4px;">مدرن</a>
+                <a href="<?php echo esc_url($inv_url . '&template=commercial'); ?>" target="_blank" class="button" style="flex: 1; text-align: center; font-size: 11px; padding: 0 4px;">تجاری</a>
             </div>
 
-            <a href="<?php echo esc_url($label_url); ?>" target="_blank" class="button button-secondary" style="text-align: center; margin-top: 4px;">
+            <a href="<?php echo esc_url($label_url); ?>" target="_blank" class="button button-secondary" style="text-align: center; margin-top: 2px;">
                 📮 چاپ برچسب پستی مرسوله
             </a>
+
+            <?php if ($customer_invoice_url): ?>
+                <button type="button" class="button" onclick="navigator.clipboard.writeText('<?php echo esc_js($customer_invoice_url); ?>'); alert('لینک اختصاصی فاکتور مشتری کپی شد!');" style="text-align: center; font-size: 11px; margin-top: 2px;">
+                    📋 کپی لینک مستقیم برای مشتری
+                </button>
+            <?php endif; ?>
         </div>
     </div>
     <?php

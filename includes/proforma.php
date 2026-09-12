@@ -84,26 +84,46 @@ function woo_factor_handle_view_proforma() {
         'payment_method'  => 'پیش‌فاکتور (نامشخص)',
     ];
 
+    $totals['grand_total_words'] = woo_factor_number_to_words($totals['grand_total']);
+    $totals['transaction_id'] = '';
+
+    $seller['stamp_url'] = woo_factor_get_stamp_url();
+    $seller['economic_code'] = $opts['shop_economic_code'] ?? '';
+    $seller['registration_no'] = $opts['shop_registration_no'] ?? '';
+    $seller['postal_code'] = $opts['shop_postal_code'] ?? '';
+
     $data = [
-        'type'            => 'proforma',
-        'order_id'        => 0,
-        'order_number'    => 'پیش‌فاکتور',
-        'invoice_number'  => 'PRF-' . rand(1000, 9999),
-        'jalali_date'     => woo_factor_jdate(current_time('timestamp'), false),
-        'jalali_time'     => woo_factor_jdate(current_time('timestamp'), true),
-        'status'          => 'proforma',
-        'status_name'     => 'پیش‌فاکتور (نامعتبر جهت حسابداری)',
-        'seller'          => $seller,
-        'buyer'           => $buyer,
-        'items'           => $items,
-        'totals'          => $totals,
-        'barcode_svg'     => Woo_Factor_Barcode_128::get_svg('PROFORMA', 40, 1.5),
-        'customer_note'   => '',
-        'footer_note'     => 'این برگه صرفاً پیش‌فاکتور و استعلام قیمت بوده و فاقد ارزش رسمی مالیاتی است.',
-        'signature_stamp' => $opts['signature_stamp'] ?? 'مهر و امضای فروشگاه',
-        'color'           => $opts['color'] ?? '#475569',
+        'type'                 => 'proforma',
+        'order_id'             => 0,
+        'order_number'         => 'پیش‌فاکتور',
+        'invoice_number'       => 'PRF-' . rand(1000, 9999),
+        'jalali_date'          => woo_factor_jdate(current_time('timestamp'), false),
+        'jalali_time'          => woo_factor_jdate(current_time('timestamp'), true),
+        'status'               => 'proforma',
+        'status_name'          => 'پیش‌فاکتور (استعلام قیمت)',
+        'seller'               => $seller,
+        'buyer'                => $buyer,
+        'items'                => $items,
+        'totals'               => $totals,
+        'barcode_svg'          => Woo_Factor_Barcode_128::get_svg('PROFORMA', 40, 1.5),
+        'qrcode_svg'           => Woo_Factor_QRCode::get_svg('PROFORMA', 90, '#475569'),
+        'customer_note'        => '',
+        'footer_note'          => 'این برگه صرفاً پیش‌فاکتور و استعلام قیمت بوده و فاقد ارزش رسمی مالیاتی است.',
+        'invoice_terms'        => 'مدت اعتبار این پیش‌فاکتور از تاریخ صدور به مدت ۴۸ ساعت کاری می‌باشد.',
+        'signature_stamp'      => $opts['signature_stamp'] ?? 'مهر و امضای فروشگاه',
+        'stamp_url'            => $seller['stamp_url'],
+        'color'                => $opts['color'] ?? '#475569',
+        'watermark_text'       => 'پیش‌فاکتور',
+        'show_barcode'         => true,
+        'show_qrcode'          => true,
+        'show_product_image'   => true,
+        'show_sku'             => true,
+        'show_tax_column'      => true,
+        'show_discount_column' => true,
+        'show_watermark'       => true,
+        'show_signature'       => true,
     ];
 
-    echo Woo_Factor_Renderer::render_html($data, 'classic');
+    echo Woo_Factor_Renderer::render_html($data, $opts['template'] ?? 'classic');
     exit;
 }
