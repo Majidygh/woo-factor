@@ -1,12 +1,12 @@
-﻿<div align="center">
+<div align="center">
 
-![ووفاکتور | پیشرفته‌ترین سامانه فاکتور ووکامرس](assets/images/banner.svg?v=2.1.0)
+![فاکتورساز حرفه‌ای ووفاکتور | WooFactor](assets/images/banner.svg?v=2.1.1)
 
-# ووفاکتور | WooFactor for WooCommerce
+# فاکتورساز حرفه‌ای ووفاکتور | WooFactor
 
-**پیشرفته‌ترین افزونه صدور و چاپ فاکتور رسمی، رسید فیش‌پرینتر، ارسال پیامک و برچسب پستی مرسوله**
+**سامانه پیشرفته و مدرن صدور و چاپ فاکتور رسمی، رسید فیش‌پرینتر، ارسال پیامک و برچسب پستی مرسوله**
 
-[![نسخه ۲.۱.۰](https://img.shields.io/badge/version-2.1.0-0f766e.svg?style=for-the-badge)](https://github.com/Majidygh/woo-factor)
+[![نسخه ۲.۱.۰](https://img.shields.io/badge/version-2.1.0-0f766e.svg?style=for-the-badge)](https://github.com/Majidygh/WooFactor)
 [![سازگار با HPOS](https://img.shields.io/badge/WooCommerce-HPOS%20Ready-96588a.svg?style=for-the-badge&logo=woocommerce&logoColor=white)](https://woocommerce.com/)
 [![PHP 7.4 تا 8.3+](https://img.shields.io/badge/PHP-7.4%20to%208.3%2B-777bb4.svg?style=for-the-badge&logo=php&logoColor=white)](https://www.php.net/)
 [![مجوز MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=for-the-badge)](LICENSE)
@@ -25,7 +25,7 @@
 منطبق با **ماده ۱۹ قانون مالیات بر ارزش افزوده سازمان امور مالیاتی**. مجهز به تفکیک اشخاص حقیقی و حقوقی، کد اقتصادی، شناسه ملی، شماره ثبت، تفکیک مالیات و ارزش افزوده، مبالغ به حروف فارسی، مهر رسمی و بارکد خطی سفارش.
 
 <div align="center">
-  <img src="assets/images/template-classic.svg?v=2.1.0" alt="قالب رسمی دارایی" width="680" />
+  <img src="assets/images/template-classic.svg?v=2.1.1" alt="قالب رسمی دارایی" width="680" />
 </div>
 
 ---
@@ -34,7 +34,7 @@
 طراحی مینیمال و کارت‌بندی شده برای فروشگاه‌های دیجیتال و آنلاین‌شاپ‌ها. دارای رنگ سازمانی قابل شخصی‌سازی، تصاویر بندانگشتی کالاها، کارت‌های تفکیکی مشتری و بارکد رهگیری.
 
 <div align="center">
-  <img src="assets/images/template-modern.svg?v=2.1.0" alt="قالب مدرن" width="680" />
+  <img src="assets/images/template-modern.svg?v=2.1.1" alt="قالب مدرن" width="680" />
 </div>
 
 ---
@@ -43,7 +43,7 @@
 طراحی استاندارد برای **دستگاه‌های صدور فیش، پوز فروشگاهی و پرینترهای حرارتی رول کاغذی ۸۰ میلی‌متری**. خروجی فشرده با بارکد سریع و بهینه جهت انبارداری و تحویل سفارش.
 
 <div align="center">
-  <img src="assets/images/template-thermal.svg?v=2.1.0" alt="قالب فیش پرینتر حرارتی" width="460" />
+  <img src="assets/images/template-thermal.svg?v=2.1.1" alt="قالب فیش پرینتر حرارتی" width="460" />
 </div>
 
 ---
@@ -95,7 +95,7 @@
 ### روش دوم: نصب از طریق Git
 ```bash
 cd wp-content/plugins/
-git clone https://github.com/Majidygh/woo-factor.git woo-factor
+git clone https://github.com/Majidygh/WooFactor.git woo-factor
 ```
 
 ---

@@ -22,7 +22,7 @@ $currency = $totals['currency'] ?? 'تومان';
     <style>
         @page { 
             size: 80mm auto; 
-            margin: 2mm; 
+            margin: 0; 
         }
         * { 
             box-sizing: border-box; 
@@ -33,27 +33,45 @@ $currency = $totals['currency'] ?? 'تومان';
             font-family: 'Vazirmatn', 'Tahoma', sans-serif;
         }
         body {
-            background: #e2e8f0;
-            color: #000000;
+            background: #f1f5f9;
+            color: #0f172a;
             direction: rtl;
             text-align: right;
             font-size: 11px;
-            line-height: 1.4;
-            padding: 10px;
+            line-height: 1.45;
+            padding: 15px 10px;
         }
         .thermal-card {
             width: 100%;
             max-width: 80mm;
             margin: 0 auto;
             background: #ffffff;
-            padding: 8mm 5mm;
-            border-radius: 4px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 6mm 5mm;
+            border-radius: 6px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+            border: 1px solid #e2e8f0;
         }
         .text-center { text-align: center; }
         .divider {
-            border-top: 1px dashed #000;
-            margin: 6px 0;
+            border-top: 1px dashed #cbd5e1;
+            margin: 8px 0;
+        }
+        @media print {
+            body { 
+                background: #fff !important; 
+                padding: 0 !important; 
+                margin: 0 !important;
+                width: 80mm !important;
+            }
+            .thermal-card { 
+                box-shadow: none !important; 
+                padding: 3mm 4mm !important; 
+                max-width: 100% !important; 
+                border: none !important; 
+                border-radius: 0 !important;
+                margin: 0 !important;
+            }
+            .no-print { display: none !important; }
         }
         .store-logo {
             max-height: 40px;
@@ -120,11 +138,6 @@ $currency = $totals['currency'] ?? 'تومان';
             text-align: center;
             font-size: 9.5px;
             margin-top: 6px;
-        }
-        @media print {
-            body { background: #fff; padding: 0; }
-            .thermal-card { box-shadow: none; padding: 2mm; max-width: 100%; border: none; }
-            .no-print { display: none !important; }
         }
     </style>
 </head>

@@ -1,13 +1,11 @@
 <?php
 /**
- * Template 2: Modern Standard (قالب مدرن و استاندارد WooFactor)
- * Ultra-clean, border-perfect, card-based layout without QR code.
+ * Template 2: Modern Minimalist (قالب مدرن و مینیمال فاکتورساز ووفاکتور)
+ * Airy, user-friendly, uncluttered, contemporary styling with clean print support.
  */
 defined('ABSPATH') || exit;
 
-$brand = woo_factor_normalize_color($data['color'] ?? '', '#0284c7');
-$brand_dark = woo_factor_color_shade($brand, -25, '#0369a1');
-$brand_light = woo_factor_color_shade($brand, 90, '#f0f9ff');
+$brand = woo_factor_normalize_color($data['color'] ?? '', '#0F766E');
 $seller = $data['seller'] ?? [];
 $buyer = $data['buyer'] ?? [];
 $totals = $data['totals'] ?? [];
@@ -15,13 +13,6 @@ $items = $data['items'] ?? [];
 $logo_url = !empty($seller['logo_url']) ? $seller['logo_url'] : '';
 $stamp_url = !empty($data['stamp_url']) ? $data['stamp_url'] : '';
 $currency = $totals['currency'] ?? 'تومان';
-
-$status_color = '#10b981';
-if (in_array($data['status'], ['pending', 'on-hold'], true)) {
-    $status_color = '#f59e0b';
-} elseif (in_array($data['status'], ['cancelled', 'failed'], true)) {
-    $status_color = '#ef4444';
-}
 ?>
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
@@ -29,25 +20,28 @@ if (in_array($data['status'], ['pending', 'on-hold'], true)) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
-    <title>فاکتور خرید - <?php echo esc_html($data['invoice_number']); ?></title>
+    <title>فاکتور سفارش - <?php echo esc_html($data['invoice_number']); ?></title>
     <style>
-        @page { size: A4 portrait; margin: 8mm; }
-        * { 
-            box-sizing: border-box; 
-            margin: 0; 
-            padding: 0; 
-            -webkit-print-color-adjust: exact !important; 
+        @page {
+            size: A4 portrait;
+            margin: 8mm 10mm;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
         }
         body {
-            font-family: 'Vazirmatn', 'Tahoma', 'Segoe UI', sans-serif;
+            font-family: 'Vazirmatn', Tahoma, 'Segoe UI', sans-serif;
             background: #f8fafc;
             color: #1e293b;
             direction: rtl;
             text-align: right;
             font-size: 11px;
-            line-height: 1.5;
-            padding: 15px;
+            line-height: 1.55;
+            padding: 20px 10px;
         }
         .invoice-card {
             position: relative;
@@ -55,433 +49,522 @@ if (in_array($data['status'], ['pending', 'on-hold'], true)) {
             max-width: 820px;
             margin: 0 auto;
             background: #ffffff;
-            border-radius: 10px;
-            padding: 20px;
             border: 1px solid #e2e8f0;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+            border-radius: 8px;
+            padding: 24px 28px;
+            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
         }
         .watermark {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) rotate(-28deg);
-            font-size: 64px;
+            font-size: 58px;
             font-weight: 900;
-            color: rgba(2, 132, 199, 0.05);
-            border: 6px dashed rgba(2, 132, 199, 0.08);
-            padding: 15px 40px;
-            border-radius: 16px;
+            color: rgba(15, 118, 110, 0.04);
+            border: 5px dashed rgba(15, 118, 110, 0.06);
+            padding: 12px 36px;
+            border-radius: 12px;
             pointer-events: none;
             user-select: none;
             white-space: nowrap;
             z-index: 0;
         }
-        .header-banner {
-            background: linear-gradient(135deg, <?php echo esc_attr($brand); ?> 0%, <?php echo esc_attr($brand_dark); ?> 100%);
-            border-radius: 8px;
-            color: #ffffff;
-            padding: 16px 20px;
+
+        /* Top Accent Bar */
+        .top-accent-bar {
+            height: 4px;
+            background: <?php echo esc_attr($brand); ?>;
+            border-radius: 4px 4px 0 0;
+            margin: -24px -28px 20px -28px;
+        }
+
+        /* Header */
+        .header-wrap {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
-            flex-wrap: wrap;
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 16px;
+            margin-bottom: 18px;
+            gap: 16px;
+        }
+        .brand-box {
+            display: flex;
+            align-items: center;
             gap: 12px;
         }
-        .brand-section {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-        .logo-wrapper {
-            background: #ffffff;
-            border-radius: 6px;
-            padding: 6px 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            max-height: 52px;
-        }
-        .logo-wrapper img {
-            max-height: 40px;
-            max-width: 120px;
+        .brand-logo img {
+            max-height: 48px;
+            max-width: 130px;
             object-fit: contain;
+            display: block;
         }
-        .brand-text h1 {
-            font-size: 17px;
+        .brand-title {
+            font-size: 16px;
             font-weight: 900;
-            margin-bottom: 2px;
-            color: #ffffff;
+            color: #0f172a;
         }
-        .brand-text p {
-            font-size: 11px;
-            color: rgba(255, 255, 255, 0.85);
+        .brand-subtitle {
+            font-size: 10.5px;
+            color: #64748b;
+            margin-top: 2px;
         }
         .header-meta {
             text-align: left;
-            direction: ltr;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
         }
-        .status-badge {
-            display: inline-block;
-            background: <?php echo esc_attr($status_color); ?>;
-            color: #ffffff;
-            font-size: 10.5px;
-            font-weight: bold;
-            padding: 3px 12px;
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: #f0fdf4;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+            padding: 3px 10px;
             border-radius: 20px;
-            margin-bottom: 5px;
-            direction: rtl;
+            font-size: 10px;
+            font-weight: bold;
         }
-        .meta-line {
+        .meta-text {
             font-size: 10.5px;
-            color: rgba(255, 255, 255, 0.9);
-            direction: rtl;
-            text-align: left;
+            color: #64748b;
         }
-        .info-grid {
+
+        /* Parties Grid */
+        .parties-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 14px;
-            margin-bottom: 16px;
+            margin-bottom: 18px;
         }
-        .card-box {
-            background: #f8fafc;
+        .party-card {
+            background: #fbfcfe;
             border: 1px solid #e2e8f0;
             border-radius: 8px;
             padding: 12px 14px;
         }
-        .card-title {
+        .party-header {
             font-size: 11.5px;
-            font-weight: bold;
+            font-weight: 800;
             color: <?php echo esc_attr($brand); ?>;
             margin-bottom: 8px;
-            border-bottom: 1.5px solid #e2e8f0;
-            padding-bottom: 4px;
             display: flex;
             align-items: center;
             gap: 6px;
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 6px;
         }
-        .info-row {
+        .party-row {
             display: flex;
             justify-content: space-between;
+            font-size: 10px;
             margin-bottom: 4px;
-            font-size: 10.5px;
+            color: #334155;
         }
-        .info-row .lbl { color: #64748b; }
-        .info-row .val { font-weight: bold; color: #1e293b; text-align: left; max-width: 65%; word-break: break-word; }
-        .items-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 16px;
+        .party-row span.k {
+            color: #64748b;
+        }
+        .party-row span.v {
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        /* Items Table */
+        .items-box {
             border: 1px solid #e2e8f0;
             border-radius: 8px;
             overflow: hidden;
+            margin-bottom: 18px;
+        }
+        .m-table {
+            width: 100%;
+            border-collapse: collapse;
             font-size: 10.5px;
         }
-        .items-table th {
-            background: <?php echo esc_attr($brand_light); ?>;
-            color: <?php echo esc_attr($brand_dark); ?>;
-            padding: 9px 8px;
-            font-weight: 800;
-            text-align: center;
-            border-bottom: 2px solid #cbd5e1;
-        }
-        .items-table td {
-            padding: 8px 8px;
+        .m-table th {
+            background: #f8fafc;
+            color: #334155;
+            font-weight: 700;
+            padding: 8px 10px;
             border-bottom: 1px solid #e2e8f0;
             text-align: center;
+        }
+        .m-table td {
+            padding: 8px 10px;
+            border-bottom: 1px solid #f8fafc;
             vertical-align: middle;
+            text-align: center;
         }
-        .items-table tr:nth-child(even) {
-            background: #fafafa;
+        .m-table tr:last-child td {
+            border-bottom: none;
         }
-        .product-cell {
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .m-table td.desc-cell {
             text-align: right;
         }
-        .product-thumb {
-            width: 36px;
-            height: 36px;
-            border-radius: 4px;
-            object-fit: cover;
-            border: 1px solid #e2e8f0;
-            flex-shrink: 0;
+        .m-table td.amount-cell {
+            text-align: left;
+            font-weight: 600;
+            font-feature-settings: "tnum";
         }
-        .sku-badge {
-            display: inline-block;
-            background: #f1f5f9;
-            color: #475569;
-            padding: 1px 6px;
-            border-radius: 4px;
+        .product-meta-pill {
             font-size: 9px;
-            font-weight: bold;
+            color: #64748b;
             margin-top: 2px;
         }
+
+        /* Totals & Notes */
         .bottom-grid {
             display: grid;
-            grid-template-columns: 1fr 320px;
+            grid-template-columns: 1.2fr 1fr;
             gap: 16px;
-            margin-bottom: 14px;
-            align-items: start;
+            margin-bottom: 16px;
         }
-        .totals-card {
-            background: #f8fafc;
+        .notes-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .terms-pill {
+            background: #fbfcfe;
             border: 1px solid #e2e8f0;
             border-radius: 8px;
-            padding: 14px;
+            padding: 10px 12px;
+            font-size: 9.5px;
+            color: #475569;
+            line-height: 1.5;
+        }
+        .words-pill {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #166534;
+            border-radius: 6px;
+            padding: 6px 10px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+        .totals-card {
+            background: #fbfcfe;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 12px 16px;
         }
         .totals-row {
             display: flex;
             justify-content: space-between;
-            padding: 5px 0;
-            font-size: 11px;
+            font-size: 10.5px;
+            margin-bottom: 6px;
             color: #475569;
-            border-bottom: 1px dashed #e2e8f0;
         }
-        .totals-row:last-child {
-            border-bottom: none;
-        }
-        .grand-total-box {
-            background: <?php echo esc_attr($brand_light); ?>;
-            border: 1.5px solid <?php echo esc_attr($brand); ?>;
-            border-radius: 6px;
-            padding: 10px 12px;
-            margin-top: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .grand-total-box .grand-lbl {
-            font-size: 12px;
-            font-weight: bold;
-            color: <?php echo esc_attr($brand_dark); ?>;
-        }
-        .grand-total-box .grand-val {
-            font-size: 14.5px;
+        .totals-row.final-row {
+            border-top: 1px solid #cbd5e1;
+            padding-top: 8px;
+            margin-top: 8px;
+            margin-bottom: 0;
+            font-size: 12.5px;
             font-weight: 900;
-            color: <?php echo esc_attr($brand_dark); ?>;
-            direction: ltr;
+            color: <?php echo esc_attr($brand); ?>;
         }
-        .extra-box {
+
+        /* Footer & Signatures */
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 14px;
+            border-top: 1px solid #f1f5f9;
+            padding-top: 14px;
+            align-items: center;
+        }
+        .sig-box {
+            border: 1px dashed #cbd5e1;
+            border-radius: 8px;
+            height: 85px;
+            padding: 6px 10px;
+            text-align: center;
             display: flex;
             flex-direction: column;
-            gap: 10px;
-        }
-        .barcode-card {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 12px;
-            display: flex;
             justify-content: space-between;
             align-items: center;
+            background: #fbfcfe;
         }
-        .stamp-box {
-            border: 1px dashed #cbd5e1;
-            border-radius: 6px;
-            padding: 8px;
-            min-height: 75px;
-            min-width: 130px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: #fff;
+        .sig-box .title {
+            font-size: 10px;
+            font-weight: bold;
+            color: #64748b;
         }
-        .stamp-box img {
-            max-height: 60px;
-            max-width: 120px;
+        .sig-box img {
+            max-height: 48px;
+            max-width: 110px;
             object-fit: contain;
         }
-        .footer-bar {
-            border-top: 1px solid #e2e8f0;
-            padding-top: 10px;
-            font-size: 10px;
-            color: #64748b;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .barcode-box {
+            text-align: center;
         }
+        .barcode-text {
+            font-size: 9px;
+            color: #64748b;
+            margin-top: 2px;
+        }
+        .footer-tagline {
+            text-align: center;
+            margin-top: 12px;
+            font-size: 9.5px;
+            color: #94a3b8;
+        }
+
+        /* Print Media Styles */
         @media print {
-            body { background: #fff; padding: 0; }
-            .invoice-card { border: none; box-shadow: none; padding: 0; max-width: 100%; }
-            .no-print { display: none !important; }
+            html, body {
+                background: #ffffff !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                width: 100% !important;
+                color: #000000 !important;
+                font-size: 9.5pt !important;
+            }
+            .no-print, .woo-factor-toolbar {
+                display: none !important;
+                height: 0 !important;
+                visibility: hidden !important;
+            }
+            .invoice-card {
+                border: 1px solid #cbd5e1 !important;
+                box-shadow: none !important;
+                padding: 12px 16px !important;
+                margin: 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                border-radius: 0 !important;
+            }
+            .watermark {
+                display: none !important;
+            }
+            tr, td, th {
+                page-break-inside: avoid !important;
+            }
+            .parties-row, .bottom-grid, .footer-grid {
+                page-break-inside: avoid !important;
+            }
         }
     </style>
 </head>
 <body>
 
-<?php if (!empty($data['show_watermark']) && !empty($data['watermark_text'])): ?>
-    <div class="watermark"><?php echo esc_html($data['watermark_text']); ?></div>
-<?php endif; ?>
-
 <div class="invoice-card">
-    <!-- Header Banner -->
-    <div class="header-banner">
-        <div class="brand-section">
+    <div class="top-accent-bar"></div>
+
+    <?php if (!empty($data['show_watermark']) && !empty($data['watermark_text'])): ?>
+        <div class="watermark"><?php echo esc_html($data['watermark_text']); ?></div>
+    <?php endif; ?>
+
+    <!-- Header -->
+    <div class="header-wrap">
+        <div class="brand-box">
             <?php if ($logo_url): ?>
-                <div class="logo-wrapper">
-                    <img src="<?php echo esc_url($logo_url); ?>" alt="<?php echo esc_attr($seller['name']); ?>">
-                </div>
+                <div class="brand-logo"><img src="<?php echo esc_url($logo_url); ?>" alt="لوگو"></div>
             <?php endif; ?>
-            <div class="brand-text">
-                <h1><?php echo esc_html($seller['name']); ?></h1>
-                <p>صورتحساب خرید سفارش #<?php echo woo_factor_fa_digits($data['order_number']); ?></p>
+            <div>
+                <div class="brand-title"><?php echo esc_html($seller['name']); ?></div>
+                <div class="brand-subtitle">فاکتور خرید سفارش رسمی #<?php echo woo_factor_fa_digits($data['order_number']); ?></div>
             </div>
         </div>
+
         <div class="header-meta">
-            <div><span class="status-badge"><?php echo esc_html($data['status_name']); ?></span></div>
-            <div class="meta-line"><strong>شماره فاکتور:</strong> <?php echo woo_factor_fa_digits($data['invoice_number']); ?></div>
-            <div class="meta-line"><strong>تاریخ:</strong> <?php echo woo_factor_fa_digits($data['jalali_date']); ?> - <?php echo woo_factor_fa_digits($data['jalali_time']); ?></div>
+            <div class="status-pill">
+                <span>●</span> <?php echo esc_html($data['status_name']); ?>
+            </div>
+            <div class="meta-text">شماره فاکتور: <strong><?php echo woo_factor_fa_digits($data['invoice_number']); ?></strong></div>
+            <div class="meta-text">تاریخ: <?php echo woo_factor_fa_digits($data['jalali_date']); ?></div>
         </div>
     </div>
 
-    <!-- Parties Grid -->
-    <div class="info-grid">
-        <div class="card-box">
-            <div class="card-title">🏢 مشخصات فروشگاه</div>
-            <div class="info-row"><span class="lbl">فروشگاه:</span><span class="val"><?php echo esc_html($seller['name']); ?></span></div>
+    <!-- Parties -->
+    <div class="parties-row">
+        <!-- Seller -->
+        <div class="party-card">
+            <div class="party-header">
+                <span>🏢 مشخصات فروشگاه</span>
+            </div>
+            <div class="party-row">
+                <span class="k">فروشنده:</span>
+                <span class="v"><?php echo esc_html($seller['name']); ?></span>
+            </div>
             <?php if (!empty($seller['national_id'])): ?>
-                <div class="info-row"><span class="lbl">شناسه ملی / کد اقتصادی:</span><span class="val"><?php echo woo_factor_fa_digits($seller['national_id']); ?></span></div>
+                <div class="party-row">
+                    <span class="k">شناسه / کد ملی:</span>
+                    <span class="v"><?php echo woo_factor_fa_digits($seller['national_id']); ?></span>
+                </div>
             <?php endif; ?>
             <?php if (!empty($seller['phone'])): ?>
-                <div class="info-row"><span class="lbl">تلفن تماس:</span><span class="val"><?php echo woo_factor_fa_digits($seller['phone']); ?></span></div>
+                <div class="party-row">
+                    <span class="k">تلفن تماس:</span>
+                    <span class="v"><?php echo woo_factor_fa_digits($seller['phone']); ?></span>
+                </div>
             <?php endif; ?>
-            <?php if (!empty($seller['address'])): ?>
-                <div class="info-row"><span class="lbl">آدرس:</span><span class="val"><?php echo esc_html($seller['address']); ?></span></div>
-            <?php endif; ?>
+            <div class="party-row">
+                <span class="k">نشانی:</span>
+                <span class="v" style="font-size: 9px;"><?php echo esc_html($seller['address']); ?></span>
+            </div>
         </div>
 
-        <div class="card-box">
-            <div class="card-title">👤 مشخصات خریدار</div>
-            <div class="info-row"><span class="lbl">نام خریدار:</span><span class="val"><?php echo esc_html($buyer['company'] ?: $buyer['name']); ?></span></div>
+        <!-- Buyer -->
+        <div class="party-card">
+            <div class="party-header">
+                <span>👤 مشخصات خریدار</span>
+            </div>
+            <div class="party-row">
+                <span class="k">نام خریدار:</span>
+                <span class="v"><?php echo esc_html($buyer['name']); ?></span>
+            </div>
             <?php if (!empty($buyer['national_id'])): ?>
-                <div class="info-row"><span class="lbl">کد ملی / شناسه:</span><span class="val"><?php echo woo_factor_fa_digits($buyer['national_id']); ?></span></div>
+                <div class="party-row">
+                    <span class="k">کد ملی / شناسه:</span>
+                    <span class="v"><?php echo woo_factor_fa_digits($buyer['national_id']); ?></span>
+                </div>
             <?php endif; ?>
             <?php if (!empty($buyer['phone'])): ?>
-                <div class="info-row"><span class="lbl">شماره تماس:</span><span class="val"><?php echo woo_factor_fa_digits($buyer['phone']); ?></span></div>
+                <div class="party-row">
+                    <span class="k">شماره تماس:</span>
+                    <span class="v"><?php echo woo_factor_fa_digits($buyer['phone']); ?></span>
+                </div>
             <?php endif; ?>
-            <div class="info-row"><span class="lbl">نشانی تحویل:</span><span class="val"><?php echo esc_html($buyer['full_address']); ?></span></div>
+            <div class="party-row">
+                <span class="k">نشانی تحویل:</span>
+                <span class="v" style="font-size: 9px;"><?php echo esc_html($buyer['address']); ?></span>
+            </div>
         </div>
     </div>
 
     <!-- Items Table -->
-    <table class="items-table">
-        <thead>
-            <tr>
-                <th style="width: 6%;">ردیف</th>
-                <th style="width: 44%; text-align: right; padding-right: 12px;">شرح محصول</th>
-                <th style="width: 8%;">تعداد</th>
-                <th style="width: 14%;">قیمت واحد</th>
-                <?php if (!empty($data['show_discount_column'])): ?>
-                    <th style="width: 12%;">تخفیف</th>
-                <?php endif; ?>
-                <th style="width: 16%;">جمع کل</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($items as $item): ?>
+    <div class="items-box">
+        <table class="m-table">
+            <thead>
                 <tr>
-                    <td><?php echo woo_factor_fa_digits($item['index']); ?></td>
-                    <td>
-                        <div class="product-cell">
-                            <?php if (!empty($data['show_product_image']) && !empty($item['thumbnail_url'])): ?>
-                                <img src="<?php echo esc_url($item['thumbnail_url']); ?>" alt="" class="product-thumb">
-                            <?php endif; ?>
-                            <div>
-                                <div style="font-weight: bold; color: #0f172a;"><?php echo esc_html($item['title']); ?></div>
-                                <?php if (!empty($data['show_sku']) && !empty($item['sku']) && $item['sku'] !== '-'): ?>
-                                    <span class="sku-badge">کد: <?php echo esc_html($item['sku']); ?></span>
-                                <?php endif; ?>
-                                <?php if (!empty($item['meta'])): ?>
-                                    <div style="font-size: 9px; color: #64748b; margin-top: 2px;"><?php echo esc_html($item['meta']); ?></div>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-                    </td>
-                    <td style="font-weight: bold;"><?php echo woo_factor_fa_digits($item['qty']); ?></td>
-                    <td><?php echo woo_factor_number_format($item['unit_price']); ?> <?php echo esc_html($currency); ?></td>
-                    <?php if (!empty($data['show_discount_column'])): ?>
-                        <td style="color: #ef4444;"><?php echo $item['discount'] > 0 ? woo_factor_number_format($item['discount']) . ' ' . esc_html($currency) : '-'; ?></td>
+                    <th style="width: 6%;">ردیف</th>
+                    <?php if (!empty($data['show_sku'])): ?>
+                        <th style="width: 12%;">کد کالا</th>
                     <?php endif; ?>
-                    <td style="font-weight: 800; color: #0f172a;"><?php echo woo_factor_number_format($item['total']); ?> <?php echo esc_html($currency); ?></td>
+                    <th style="width: 40%; text-align: right;">شرح محصول</th>
+                    <th style="width: 8%;">تعداد</th>
+                    <th style="width: 15%; text-align: left;">قیمت واحد</th>
+                    <?php if (!empty($data['show_discount_column'])): ?>
+                        <th style="width: 11%; text-align: left;">تخفیف</th>
+                    <?php endif; ?>
+                    <th style="width: 16%; text-align: left;">جمع کل</th>
                 </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <?php foreach ($items as $item): ?>
+                    <tr>
+                        <td><?php echo woo_factor_fa_digits($item['index']); ?></td>
+                        <?php if (!empty($data['show_sku'])): ?>
+                            <td style="font-size: 9px; color: #64748b;"><?php echo esc_html($item['sku']); ?></td>
+                        <?php endif; ?>
+                        <td class="desc-cell">
+                            <strong><?php echo esc_html($item['title']); ?></strong>
+                            <?php if (!empty($item['meta'])): ?>
+                                <div class="product-meta-pill"><?php echo esc_html($item['meta']); ?></div>
+                            <?php endif; ?>
+                        </td>
+                        <td style="font-weight: bold;"><?php echo woo_factor_fa_digits($item['qty']); ?></td>
+                        <td class="amount-cell"><?php echo woo_factor_number_format($item['unit_price']); ?> <?php echo esc_html($currency); ?></td>
+                        <?php if (!empty($data['show_discount_column'])): ?>
+                            <td class="amount-cell" style="color: #dc2626;"><?php echo $item['discount'] > 0 ? woo_factor_number_format($item['discount']) : '-'; ?></td>
+                        <?php endif; ?>
+                        <td class="amount-cell" style="font-weight: bold; color: #0f172a;"><?php echo woo_factor_number_format($item['total']); ?> <?php echo esc_html($currency); ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
 
-    <!-- Bottom Section: Totals & Verification -->
+    <!-- Totals & Notes -->
     <div class="bottom-grid">
-        <div class="extra-box">
-            <!-- Terms & Note -->
-            <?php if (!empty($data['invoice_terms'])): ?>
-                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 12px; font-size: 10px; color: #475569;">
-                    <strong style="color: <?php echo esc_attr($brand); ?>;">شرایط و قوانین:</strong> <?php echo nl2br(esc_html($data['invoice_terms'])); ?>
+        <div class="notes-card">
+            <?php if (!empty($totals['grand_total_words'])): ?>
+                <div class="words-pill">
+                    مبلغ به حروف: <?php echo esc_html($totals['grand_total_words']); ?> <?php echo esc_html($currency); ?>
                 </div>
             <?php endif; ?>
 
-            <!-- Barcode & Stamp Section -->
-            <div class="barcode-card">
-                <?php if (!empty($data['show_barcode']) && !empty($data['barcode_svg'])): ?>
-                    <div style="text-align: right;">
-                        <div><?php echo $data['barcode_svg']; ?></div>
-                        <div style="font-size: 9px; color: #64748b; margin-top: 3px;">بارکد پیگیری سفارش #<?php echo woo_factor_fa_digits($data['order_number']); ?></div>
-                    </div>
-                <?php endif; ?>
+            <?php if (!empty($data['invoice_terms'])): ?>
+                <div class="terms-pill">
+                    <strong>شرایط و قوانین:</strong> <?php echo nl2br(esc_html($data['invoice_terms'])); ?>
+                </div>
+            <?php endif; ?>
 
-                <?php if (!empty($data['show_signature'])): ?>
-                    <div class="stamp-box">
-                        <?php if ($stamp_url): ?>
-                            <img src="<?php echo esc_url($stamp_url); ?>" alt="مهر فروشگاه">
-                        <?php else: ?>
-                            <span style="font-weight: bold; color: #64748b; font-size: 10px;"><?php echo esc_html($data['signature_stamp']); ?></span>
-                        <?php endif; ?>
-                    </div>
+            <div style="font-size: 9.5px; color: #64748b;">
+                روش پرداخت: <strong><?php echo esc_html($totals['payment_method']); ?></strong>
+                <?php if (!empty($totals['transaction_id'])): ?>
+                    • شماره پیگیری: <?php echo woo_factor_fa_digits($totals['transaction_id']); ?>
                 <?php endif; ?>
             </div>
         </div>
 
-        <!-- Totals Card -->
         <div class="totals-card">
             <div class="totals-row">
                 <span>جمع کل اقلام:</span>
                 <strong><?php echo woo_factor_number_format($totals['subtotal']); ?> <?php echo esc_html($currency); ?></strong>
             </div>
-            <?php if ($totals['discount'] > 0): ?>
-                <div class="totals-row" style="color: #ef4444;">
-                    <span>مجموع تخفیف:</span>
-                    <strong><?php echo woo_factor_number_format($totals['discount']); ?>- <?php echo esc_html($currency); ?></strong>
+            <?php if (!empty($totals['discount']) && $totals['discount'] > 0): ?>
+                <div class="totals-row">
+                    <span>تخفیف سفارش:</span>
+                    <strong style="color: #dc2626;"><?php echo woo_factor_number_format($totals['discount']); ?>- <?php echo esc_html($currency); ?></strong>
                 </div>
             <?php endif; ?>
             <div class="totals-row">
-                <span>حمل و نقل (<?php echo esc_html($totals['shipping_method']); ?>):</span>
+                <span>هزینه حمل و نقل:</span>
                 <strong><?php echo $totals['shipping'] > 0 ? woo_factor_number_format($totals['shipping']) . ' ' . esc_html($currency) : 'رایگان'; ?></strong>
             </div>
-            <?php if ($totals['tax'] > 0): ?>
+            <?php if (!empty($totals['tax']) && $totals['tax'] > 0): ?>
                 <div class="totals-row">
-                    <span>مالیات بر ارزش افزوده:</span>
+                    <span>مالیات ارزش افزوده:</span>
                     <strong><?php echo woo_factor_number_format($totals['tax']); ?> <?php echo esc_html($currency); ?></strong>
                 </div>
             <?php endif; ?>
-            <div class="grand-total-box">
-                <span class="grand-lbl">مبلغ کل پرداختی:</span>
-                <span class="grand-val"><?php echo woo_factor_number_format($totals['grand_total']); ?> <?php echo esc_html($currency); ?></span>
+            <div class="totals-row final-row">
+                <span>مبلغ قابل پرداخت:</span>
+                <strong><?php echo woo_factor_number_format($totals['grand_total']); ?> <?php echo esc_html($currency); ?></strong>
             </div>
-            <?php if (!empty($totals['grand_total_words'])): ?>
-                <div style="font-size: 9.5px; color: #64748b; margin-top: 6px; text-align: center;">
-                    به حروف: <?php echo esc_html($totals['grand_total_words']); ?> <?php echo esc_html($currency); ?>
-                </div>
+        </div>
+    </div>
+
+    <!-- Signatures & Barcode -->
+    <div class="footer-grid">
+        <div class="sig-box">
+            <div class="title">مهر و امضای فروشگاه</div>
+            <?php if (!empty($data['show_signature'])): ?>
+                <?php if ($stamp_url): ?>
+                    <img src="<?php echo esc_url($stamp_url); ?>" alt="مهر فروشگاه">
+                <?php else: ?>
+                    <span style="font-size: 9px; color: #94a3b8; margin-top: 10px;"><?php echo esc_html($data['signature_stamp']); ?></span>
+                <?php endif; ?>
+            <?php endif; ?>
+        </div>
+
+        <div class="sig-box">
+            <div class="title">امضای خریدار</div>
+            <span style="font-size: 9px; color: #94a3b8; margin-top: 18px;">کالا سالم تحویل داده شد.</span>
+        </div>
+
+        <div class="barcode-box">
+            <?php if (!empty($data['show_barcode']) && !empty($data['barcode_svg'])): ?>
+                <div><?php echo $data['barcode_svg']; ?></div>
+                <div class="barcode-text">#<?php echo woo_factor_fa_digits($data['order_number']); ?></div>
             <?php endif; ?>
         </div>
     </div>
 
-    <!-- Footer Bar -->
-    <div class="footer-bar">
-        <span><?php echo esc_html($data['footer_note']); ?></span>
-        <span>روش پرداخت: <?php echo esc_html($totals['payment_method']); ?></span>
-    </div>
+    <!-- Footer Note -->
+    <?php if (!empty($data['footer_note'])): ?>
+        <div class="footer-tagline">
+            <?php echo esc_html($data['footer_note']); ?>
+        </div>
+    <?php endif; ?>
 </div>
 
 </body>

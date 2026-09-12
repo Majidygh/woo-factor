@@ -71,14 +71,16 @@ class Woo_Factor_Renderer {
         $html = '<div class="no-print woo-factor-toolbar">'
               . '<div class="wf-tb-inner">'
               . '<div class="wf-tb-right">'
-              . '<button type="button" onclick="window.print();" class="wf-btn wf-btn-primary">🖨️ چاپ سریع فاکتور (Print)</button>'
+              . '<button type="button" onclick="window.print();" class="wf-btn wf-btn-primary" title="چاپ مستقیم یا ذخیره به صورت فایل PDF">🖨️ چاپ و ذخیره PDF (Print / PDF)</button>'
               . '<span class="wf-sep"></span>'
-              . '<span class="wf-lbl">قالب:</span>'
+              . '<span class="wf-lbl">انتخاب قالب:</span>'
               . '<a href="' . esc_url($classic_url) . '" class="wf-btn ' . ($current_template === 'classic' ? 'wf-btn-active' : '') . '">رسمی دارایی</a>'
-              . '<a href="' . esc_url($modern_url) . '" class="wf-btn ' . ($current_template === 'modern' ? 'wf-btn-active' : '') . '">مدرن استاندارد</a>'
+              . '<a href="' . esc_url($modern_url) . '" class="wf-btn ' . ($current_template === 'modern' ? 'wf-btn-active' : '') . '">مدرن شیک</a>'
               . '<a href="' . esc_url($thermal_url) . '" class="wf-btn ' . ($current_template === 'thermal' ? 'wf-btn-active' : '') . '">فیش‌پرینتر حرارتی</a>'
               . '</div>'
               . '<div class="wf-tb-left">'
+              . '<span class="wf-hint" title="راهنمای خروجی PDF">💡 برای ذخیره PDF، مقصد چاپ (Destination) را روی <strong>Save as PDF</strong> بگذارید</span>'
+              . '<span class="wf-sep"></span>'
               . '<span class="wf-info">فاکتور: <strong>' . woo_factor_fa_digits($data['invoice_number'] ?? $order_num) . '</strong></span>'
               . '</div>'
               . '</div>'
@@ -155,6 +157,14 @@ class Woo_Factor_Renderer {
             .wf-lbl {
                 color: #94a3b8;
                 font-size: 11px;
+            }
+            .wf-hint {
+                color: #fef08a;
+                font-size: 11px;
+                background: rgba(254, 240, 138, 0.1);
+                border: 1px solid rgba(254, 240, 138, 0.25);
+                padding: 3px 8px;
+                border-radius: 4px;
             }
             .wf-info {
                 color: #cbd5e1;

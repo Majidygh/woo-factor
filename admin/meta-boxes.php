@@ -12,7 +12,7 @@ add_action('add_meta_boxes', function () {
 
     add_meta_box(
         'woo_factor_order_invoice_box',
-        __('🧾 ووفاکتور | صدور و چاپ فاکتور', 'woo-factor'),
+        __('🧾 فاکتورساز حرفه‌ای ووفاکتور', 'woo-factor'),
         'woo_factor_render_order_meta_box',
         $screen,
         'side',

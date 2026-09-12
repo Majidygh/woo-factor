@@ -159,8 +159,8 @@
     </g>
 
     <!-- Main Title -->
-    <text x="500" y="105" fill="#ffffff" font-family="'Vazirmatn', Tahoma, sans-serif" font-size="44" font-weight="900" text-anchor="end" letter-spacing="-0.5">
-      ووفاکتور | <tspan fill="#2dd4bf">WooFactor</tspan>
+    <text x="500" y="105" fill="#ffffff" font-family="'Vazirmatn', Tahoma, sans-serif" font-size="38" font-weight="900" text-anchor="end" letter-spacing="-0.5">
+      فاکتورساز حرفه‌ای ووفاکتور | <tspan fill="#2dd4bf">WooFactor</tspan>
     </text>
 
     <!-- Subtitle -->
