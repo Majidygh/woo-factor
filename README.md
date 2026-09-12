@@ -6,12 +6,12 @@
 
 **سامانه پیشرفته و مدرن صدور و چاپ فاکتور رسمی، رسید فیش‌پرینتر، ارسال پیامک و برچسب پستی مرسوله**
 
-[![نسخه ۲.۱.۰](https://img.shields.io/badge/version-2.1.0-0f766e.svg?style=for-the-badge)](https://github.com/Majidygh/WooFactor)
+[![نسخه ۲.۱.۱](https://img.shields.io/badge/version-2.1.1-0f766e.svg?style=for-the-badge)](https://github.com/Majidygh/WooFactor)
 [![سازگار با HPOS](https://img.shields.io/badge/WooCommerce-HPOS%20Ready-96588a.svg?style=for-the-badge&logo=woocommerce&logoColor=white)](https://woocommerce.com/)
 [![PHP 7.4 تا 8.3+](https://img.shields.io/badge/PHP-7.4%20to%208.3%2B-777bb4.svg?style=for-the-badge&logo=php&logoColor=white)](https://www.php.net/)
 [![مجوز MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=for-the-badge)](LICENSE)
 
-[امکانات کلیدی](#-امکانات-و-قابلیت‌های-کلیدی) • [قالب‌های فاکتور](#-معرفی-قالب‌های-فاکتور) • [سامانه پیامک](#-اتصال-به-سامانه‌های-پیامک-کشور) • [Changelog](#-changelog-v210) • [راهنمای نصب](#-راهنمای-نصب)
+[امکانات کلیدی](#-امکانات-و-قابلیت‌های-کلیدی) • [قالب‌های فاکتور](#-معرفی-قالب‌های-فاکتور) • [سامانه پیامک](#-اتصال-به-سامانه‌های-پیامک-کشور) • [Changelog](#-changelog-v211) • [راهنمای نصب](#-راهنمای-نصب)
 
 </div>
 
@@ -75,15 +75,12 @@
 
 ---
 
-## 📋 Changelog (v2.1.0)
+## 📋 Changelog (v2.1.1)
 
-- Redesigned invoice & 80mm thermal receipt templates
-- Added legal/natural entity customer selector at checkout
-- Integrated pattern-based SMS gateways (IPPanel, Kavenegar, Melipayamak, SMS.ir)
-- Enhanced shipping labels with sender/receiver contact details & barcodes
-- Optimized rendering performance and asset loading
-- Removed legacy QR code dependencies
-- Full WooCommerce HPOS ready
+- Sleek minimalist fintech invoice redesigns (Classic Official Tax & Modern Clean)
+- Refined typography hierarchy, metadata grid, and customer/seller badges
+- Enhanced print engine and pixel-perfect single-page A4 PDF output
+- Code optimizations and asset refinements
 
 ---
 
