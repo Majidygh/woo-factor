@@ -61,6 +61,7 @@ function woo_factor_handle_view_proforma() {
             'sku'        => $product->get_sku() ?: '-',
             'title'      => $product->get_name(),
             'qty'        => $qty,
+            'price'      => $price,
             'unit_price' => $price,
             'subtotal'   => $subtotal,
             'discount'   => 0,

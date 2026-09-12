@@ -6,12 +6,12 @@
 
 **سامانه پیشرفته و مدرن صدور و چاپ فاکتور رسمی، رسید فیش‌پرینتر، ارسال پیامک و برچسب پستی مرسوله**
 
-[![نسخه ۲.۱.۱](https://img.shields.io/badge/version-2.1.1-0f766e.svg?style=for-the-badge)](https://github.com/Majidygh/WooFactor)
+[![نسخه ۲.۱.۲](https://img.shields.io/badge/version-2.1.2-0f766e.svg?style=for-the-badge)](https://github.com/Majidygh/WooFactor)
 [![سازگار با HPOS](https://img.shields.io/badge/WooCommerce-HPOS%20Ready-96588a.svg?style=for-the-badge&logo=woocommerce&logoColor=white)](https://woocommerce.com/)
 [![PHP 7.4 تا 8.3+](https://img.shields.io/badge/PHP-7.4%20to%208.3%2B-777bb4.svg?style=for-the-badge&logo=php&logoColor=white)](https://www.php.net/)
 [![مجوز MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=for-the-badge)](LICENSE)
 
-[امکانات کلیدی](#-امکانات-و-قابلیت‌های-کلیدی) • [قالب‌های فاکتور](#-معرفی-قالب‌های-فاکتور) • [سامانه پیامک](#-اتصال-به-سامانه‌های-پیامک-کشور) • [Changelog](#-changelog-v211) • [راهنمای نصب](#-راهنمای-نصب)
+[امکانات کلیدی](#-امکانات-و-قابلیت‌های-کلیدی) • [قالب‌های فاکتور](#-معرفی-قالب‌های-فاکتور) • [سامانه پیامک](#-اتصال-به-سامانه‌های-پیامک-کشور) • [Changelog](#-changelog-v212) • [راهنمای نصب](#-راهنمای-نصب)
 
 </div>
 
@@ -22,7 +22,7 @@
 ووفاکتور دارای **۳ قالب استاندارد و تفکیک‌شده** با طراحی مدرن و بدون وابستگی خارجی است:
 
 ### ۱. قالب رسمی و استاندارد دارایی (Classic Tax Standard)
-منطبق با **ماده ۱۹ قانون مالیات بر ارزش افزوده سازمان امور مالیاتی**. مجهز به تفکیک اشخاص حقیقی و حقوقی، کد اقتصادی، شناسه ملی، شماره ثبت، تفکیک مالیات و ارزش افزوده، مبالغ به حروف فارسی، مهر رسمی و بارکد خطی سفارش.
+صورتحساب رسمی فروش کالا و خدمات؛ مجهز به تفکیک اشخاص حقیقی و حقوقی، کد اقتصادی، شناسه ملی، شماره ثبت، تفکیک مالیات و ارزش افزوده، مبالغ به حروف فارسی، مهر رسمی و بارکد خطی سفارش.
 
 <div align="center">
   <img src="assets/images/template-classic.svg?v=2.1.1" alt="قالب رسمی دارایی" width="680" />
@@ -75,12 +75,12 @@
 
 ---
 
-## 📋 Changelog (v2.1.1)
+## 📋 Changelog (v2.1.2)
 
-- Sleek minimalist fintech invoice redesigns (Classic Official Tax & Modern Clean)
-- Refined typography hierarchy, metadata grid, and customer/seller badges
-- Enhanced print engine and pixel-perfect single-page A4 PDF output
-- Code optimizations and asset refinements
+- Redesigned modern template with high visual impact, vibrant fintech banner, and dual-tone cards
+- Fixed item unit price calculation and display across all templates and builders
+- Removed legal tax law subtitle from invoice header as requested
+- Updated template previews and packaging
 
 ---
 

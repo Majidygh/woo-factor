@@ -203,6 +203,7 @@ add_action('wp_ajax_woo_factor_generate_manual_invoice', function () {
             'sku'        => '-',
             'title'      => $title,
             'qty'        => $qty,
+            'price'      => $price,
             'unit_price' => $price,
             'subtotal'   => $tot,
             'discount'   => 0,

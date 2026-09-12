@@ -127,6 +127,13 @@ class Woo_Factor_Invoice_Builder {
             }
             $meta_text = implode(' | ', $meta_strings);
 
+            if ($unit_price <= 0 && $qty > 0 && $total > 0) {
+                $unit_price = $total / $qty;
+            }
+            if ($unit_price <= 0 && $product) {
+                $unit_price = (float)$product->get_price();
+            }
+
             $items[] = [
                 'index'         => $index++,
                 'id'            => $product_id,
@@ -135,8 +142,9 @@ class Woo_Factor_Invoice_Builder {
                 'meta'          => $meta_text,
                 'thumbnail_url' => $thumbnail_url,
                 'qty'           => $qty,
+                'price'         => $unit_price,
                 'unit_price'    => $unit_price,
-                'subtotal'      => $subtotal,
+                'subtotal'      => $subtotal > 0 ? $subtotal : ($unit_price * $qty),
                 'discount'      => $discount,
                 'tax'           => $tax,
                 'total'         => $total + $tax,

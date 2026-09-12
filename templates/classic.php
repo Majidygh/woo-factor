@@ -428,8 +428,7 @@ $is_legal_buyer = !empty($buyer['company']) || !empty($buyer['economic_id']) || 
         </div>
 
         <div class="inv-header-center">
-            <h1>صورتحساب الکترونیکی فروش کالا و خدمات</h1>
-            <h2>(مطابق ماده ۱۹ قانون مالیات بر ارزش افزوده سازمان امور مالیاتی)</h2>
+            <h1>صورتحساب رسمی فروش کالا و خدمات</h1>
         </div>
 
         <div class="inv-header-left">
@@ -545,21 +544,27 @@ $is_legal_buyer = !empty($buyer['company']) || !empty($buyer['economic_id']) || 
                 </tr>
             </thead>
             <tbody>
-                <?php $i = 1; foreach ($items as $item): ?>
+                <?php $i = 1; foreach ($items as $item): 
+                    $qty = max(1, (float)($item['qty'] ?? 1));
+                    $u_price = !empty($item['unit_price']) ? (float)$item['unit_price'] : (!empty($item['price']) ? (float)$item['price'] : 0);
+                    if ($u_price <= 0) {
+                        $u_price = (!empty($item['subtotal']) ? (float)$item['subtotal'] : (float)($item['total'] ?? 0)) / $qty;
+                    }
+                ?>
                     <tr>
                         <td><?php echo woo_factor_fa_digits($i++); ?></td>
                         <td class="title-cell">
                             <?php echo esc_html($item['title']); ?>
-                            <?php if (!empty($item['sku'])): ?>
+                            <?php if (!empty($item['sku']) && $item['sku'] !== '-'): ?>
                                 <div class="item-sku">کد کالا: <?php echo woo_factor_fa_digits($item['sku']); ?></div>
                             <?php endif; ?>
                             <?php if (!empty($item['meta'])): ?>
                                 <div class="item-sku"><?php echo esc_html($item['meta']); ?></div>
                             <?php endif; ?>
                         </td>
-                        <td><?php echo woo_factor_fa_digits($item['qty']); ?></td>
+                        <td><?php echo woo_factor_fa_digits($qty); ?></td>
                         <td>عدد</td>
-                        <td class="num-cell"><?php echo woo_factor_number_format($item['price']); ?></td>
+                        <td class="num-cell"><?php echo woo_factor_number_format($u_price); ?></td>
                         <td class="num-cell"><?php echo !empty($item['discount']) ? woo_factor_number_format($item['discount']) : '-'; ?></td>
                         <td class="num-cell"><?php echo woo_factor_number_format($item['total']); ?></td>
                         <td class="num-cell"><?php echo !empty($item['tax']) ? woo_factor_number_format($item['tax']) : '-'; ?></td>
