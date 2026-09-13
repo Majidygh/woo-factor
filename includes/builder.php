@@ -137,7 +137,7 @@ class Woo_Factor_Invoice_Builder {
             $items[] = [
                 'index'         => $index++,
                 'id'            => $product_id,
-                'sku'           => $sku ?: '-',
+                'sku'           => $sku ?: '',
                 'title'         => $item->get_name(),
                 'meta'          => $meta_text,
                 'thumbnail_url' => $thumbnail_url,

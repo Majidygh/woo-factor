@@ -14,6 +14,14 @@ $logo_url = !empty($seller['logo_url']) ? $seller['logo_url'] : '';
 $stamp_url = !empty($data['stamp_url']) ? $data['stamp_url'] : '';
 $currency = $totals['currency'] ?? 'تومان';
 $is_legal_buyer = !empty($buyer['company']) || !empty($buyer['economic_id']) || (($buyer['customer_type'] ?? '') === 'legal');
+
+$has_sku = false;
+foreach ($items as $it) {
+    if (!empty($it['sku']) && trim($it['sku']) !== '' && trim($it['sku']) !== '-') {
+        $has_sku = true;
+        break;
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
@@ -534,12 +542,15 @@ $is_legal_buyer = !empty($buyer['company']) || !empty($buyer['economic_id']) || 
             <thead>
                 <tr>
                     <th style="width: 5%;">ردیف</th>
-                    <th style="width: 33%;">نام کالا یا خدمات</th>
-                    <th style="width: 8%;">تعداد</th>
-                    <th style="width: 8%;">واحد</th>
+                    <th style="width: <?php echo $has_sku ? '25%' : '34%'; ?>;">نام کالا یا خدمات</th>
+                    <?php if ($has_sku): ?>
+                        <th style="width: 10%;">کد کالا</th>
+                    <?php endif; ?>
+                    <th style="width: 7%;">تعداد</th>
+                    <th style="width: 7%;">واحد</th>
                     <th style="width: 14%;">مبلغ واحد (<?php echo esc_html($currency); ?>)</th>
-                    <th style="width: 10%;">تخفیف</th>
-                    <th style="width: 12%;">مبلغ کل</th>
+                    <th style="width: 9%;">تخفیف</th>
+                    <th style="width: 13%;">مبلغ کل</th>
                     <th style="width: 10%;">مالیات</th>
                 </tr>
             </thead>
@@ -555,19 +566,30 @@ $is_legal_buyer = !empty($buyer['company']) || !empty($buyer['economic_id']) || 
                         <td><?php echo woo_factor_fa_digits($i++); ?></td>
                         <td class="title-cell">
                             <?php echo esc_html($item['title']); ?>
-                            <?php if (!empty($item['sku']) && $item['sku'] !== '-'): ?>
-                                <div class="item-sku">کد کالا: <?php echo woo_factor_fa_digits($item['sku']); ?></div>
-                            <?php endif; ?>
                             <?php if (!empty($item['meta'])): ?>
                                 <div class="item-sku"><?php echo esc_html($item['meta']); ?></div>
                             <?php endif; ?>
                         </td>
+                        <?php if ($has_sku): ?>
+                            <td class="num-cell" style="text-align: center;"><?php echo !empty($item['sku']) && $item['sku'] !== '-' ? woo_factor_fa_digits($item['sku']) : '-'; ?></td>
+                        <?php endif; ?>
                         <td><?php echo woo_factor_fa_digits($qty); ?></td>
                         <td>عدد</td>
                         <td class="num-cell"><?php echo woo_factor_number_format($u_price); ?></td>
                         <td class="num-cell"><?php echo !empty($item['discount']) ? woo_factor_number_format($item['discount']) : '-'; ?></td>
                         <td class="num-cell"><?php echo woo_factor_number_format($item['total']); ?></td>
-                        <td class="num-cell"><?php echo !empty($item['tax']) ? woo_factor_number_format($item['tax']) : '-'; ?></td>
+                        <td class="num-cell">
+                            <?php 
+                            if (!empty($item['tax'])) {
+                                echo woo_factor_number_format($item['tax']);
+                                if (!empty($item['tax_percent'])) {
+                                    echo '<div style="font-size: 8.5px; color: #64748b;">(' . woo_factor_fa_digits($item['tax_percent']) . '٪)</div>';
+                                }
+                            } else {
+                                echo '-';
+                            }
+                            ?>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

@@ -13,6 +13,14 @@ $items = $data['items'] ?? [];
 $logo_url = !empty($seller['logo_url']) ? $seller['logo_url'] : '';
 $stamp_url = !empty($data['stamp_url']) ? $data['stamp_url'] : '';
 $currency = $totals['currency'] ?? 'تومان';
+
+$has_sku = false;
+foreach ($items as $it) {
+    if (!empty($it['sku']) && trim($it['sku']) !== '' && trim($it['sku']) !== '-') {
+        $has_sku = true;
+        break;
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
@@ -547,7 +555,10 @@ $currency = $totals['currency'] ?? 'تومان';
             <thead>
                 <tr>
                     <th style="width: 5%;">#</th>
-                    <th style="width: 44%;">محصول</th>
+                    <th style="width: <?php echo $has_sku ? '34%' : '44%'; ?>;">محصول</th>
+                    <?php if ($has_sku): ?>
+                        <th style="width: 10%;">کد محصول</th>
+                    <?php endif; ?>
                     <th style="width: 15%;">قیمت واحد (<?php echo esc_html($currency); ?>)</th>
                     <th style="width: 8%;">تعداد</th>
                     <th style="width: 12%;">تخفیف</th>
@@ -572,15 +583,15 @@ $currency = $totals['currency'] ?? 'تومان';
                                 <?php endif; ?>
                                 <div>
                                     <div class="item-text-title"><?php echo esc_html($item['title']); ?></div>
-                                    <?php if (!empty($item['sku']) && $item['sku'] !== '-'): ?>
-                                        <div class="item-sub-desc">کد: <?php echo woo_factor_fa_digits($item['sku']); ?></div>
-                                    <?php endif; ?>
                                     <?php if (!empty($item['meta'])): ?>
                                         <div class="item-sub-desc"><?php echo esc_html($item['meta']); ?></div>
                                     <?php endif; ?>
                                 </div>
                             </div>
                         </td>
+                        <?php if ($has_sku): ?>
+                            <td class="num-col" style="text-align: center;"><?php echo !empty($item['sku']) && $item['sku'] !== '-' ? woo_factor_fa_digits($item['sku']) : '-'; ?></td>
+                        <?php endif; ?>
                         <td class="num-col"><?php echo woo_factor_number_format($u_price); ?></td>
                         <td><?php echo woo_factor_fa_digits($qty); ?></td>
                         <td class="num-col"><?php echo !empty($item['discount']) ? woo_factor_number_format($item['discount']) : '-'; ?></td>
